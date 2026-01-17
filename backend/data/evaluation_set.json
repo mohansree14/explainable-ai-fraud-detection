@@ -1,0 +1,42 @@
+[
+    {
+        "text": "Your Royal Mail parcel was failed to deliver. Click here to reschedule: http://bit.ly/fake",
+        "label": "Delivery Scam"
+    },
+    {
+        "text": "Hi mum, I lost my phone. This is my new number 07123456789. Please message me on WhatsApp.",
+        "label": "Suspicious Message"
+    },
+    {
+        "text": "URGENT hiring! Work from home and earn 5000/day. No experience needed.",
+        "label": "Fake Job"
+    },
+    {
+        "text": "Your account has been suspended. Verify identity now at secure-bank.web.app",
+        "label": "Phishing"
+    },
+    {
+        "text": "Hey, are you still single? I am a military doctor currently deployed.",
+        "label": "Romance Scam"
+    },
+    {
+        "text": "Your package has been delivered to your neighbor at #42.",
+        "label": "Legitimate"
+    },
+    {
+        "text": "Meeting confirmed for tomorrow at 10 AM. See you there.",
+        "label": "Legitimate"
+    },
+    {
+        "text": "Bitcoin is skyrocketing! Invest now to double your money in 24 hours.",
+        "label": "Crypto Scam"
+    },
+    {
+        "text": "The project deadline is extended by two days.",
+        "label": "Legitimate"
+    },
+    {
+        "text": "Royal Mail: We are bringing your parcel today between 2-4pm.",
+        "label": "Legitimate"
+    }
+]
