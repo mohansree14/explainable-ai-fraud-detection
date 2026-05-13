@@ -59,15 +59,34 @@ Open `http://localhost:5173` in your browser.
 ## Project Structure
 ```
 Guardan AI/
-├── backend/
-│   ├── app/
-│   │   ├── api/        # API Routes
-│   │   ├── core/       # Config
-│   │   ├── services/   # Business Logic (OCR, FraudDetector)
-│   │   └── main.py     # Entry point
-├── frontend/           # React Source
-├── data/               # Dataset storage
-└── requirements.txt    # Python dependencies
+├── homepage/           # Premium Marketing Site (React)
+├── dashboard/          # Platform Dashboard (Static HTML/JS)
+├── frontend/           # Analysis Chat Application (React)
+├── backend/            # FastAPI Intelligence Services
+├── fraud_detection/    # NLP & Machine Learning Models
+└── data/               # Dataset storage
+```
+
+## Setup & Run
+
+### 1. Marketing Homepage
+```bash
+cd homepage/ui
+npm install
+npm run dev
+```
+Open `http://localhost:5173`.
+
+### 2. Analysis Dashboard
+The dashboard is accessible via the "Launch Platform" button on the homepage or directly at `/dashboard/index.html`.
+
+### 3. Backend Services
+```bash
+# From root
+.\env\Scripts\activate
+pip install -r requirements.txt
+cd backend
+python main.py
 ```
 
 ## Reproducibility
