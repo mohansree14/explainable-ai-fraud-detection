@@ -1,0 +1,44 @@
+Guardian AI - Data Sources & Model Architecture
+1. Guardian AI - Fraud & Scam Detection Chatbot
+Data Sources:
+- Public datasets: Scamwatch, PhishTank, Spamhaus, FTC Scam Data
+- Internal data: Fraud messages, fake job offers, phishing links
+- Media data: Fake documents, screenshots, and invoices
+- Each entry labeled (Phishing, Fake Job, Crypto Scam, etc.)
+AI Models:
+1. Fraud Classification Model - Detects scam type
+2. Trust Scoring Model - Computes fraud probability (0-100)
+3. Global Scam Check Model - Cross-verifies with scam databases
+4. Document & Image Authenticity Model - Detects fakes
+5. Deepfake Detection Model - Flags AI-generated media
+6. Explanation Model - Generates human-readable reasons
+Frameworks & Infra:
+FastAPI, Flutter, React, MongoDB, SageMaker, CloudWatch, JWT, SSL
+2. Guardian AI - Research & Analytics Model
+Data Sources:
+- Social Media (Twitter, Reddit, YouTube)
+- News & Financial (Reuters, FiQA, Bloomberg)
+- Guardian AI Internal Logs
+- Datasets: GoEmotions, HateXplain, Jigsaw
+Core AI Models:
+1. Sentiment & Emotion Analysis - BERT, RoBERTa
+2. Toxicity Detection - ALBERT, CNN+Transformer
+3. Trend Forecasting - LSTM, Prophet4. Topic Clustering - BERTopic, LDA
+5. Behavioral Anomaly Detection - Isolation Forest, GNN
+6. Market Intelligence - FinBERT, ARIMA
+7. Research Report Generator (NLG) - GPT, T5, BART
+8. Cross-Domain Correlation - Bayesian Networks
+Stack & Architecture:
+Kafka, PyTorch, TensorFlow, FastAPI, Airflow, React, D3.js, AWS ECS
+3. Unified Guardian AI Ecosystem
+Architecture Overview:
+Input Layer -> Processing Layer -> Insight Fusion -> NLG Reports -> Dashboards
+Unified Components:
+- Data Input: Text, images, documents, behavioral logs
+- AI Processing: Fraud Detection + Analytics Models
+- Insight Layer: Correlation + Report Generation
+- Interface Layer: Chatbot + Web Dashboard
+Real-Time Impact:
+- Fraud prevention and scam advisory
+- Predictive insights and market trends
+- Dynamic AI-generated research summaries

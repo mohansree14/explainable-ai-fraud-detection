@@ -1,0 +1,184 @@
+🛡 GUARDIAN AI — BRAND BIBLE (VERSION  
+3.0)
+The definitive system for identity , design, and communication
+01 — BRAND FOUNDA TION
+Brand Essence
+“Guardian AI is intelligence that protects, decides, and acts.”
+Core Statement
+Guardian AI exists to deliver intelligence organizations can trust — enabling them to protect systems,  
+make decisions, and act in real time without compromise.
+Positioning
+Guardian AI is an enterprise AI platform built for organizations where accuracy , speed, and reliability  
+are critical.
+We are not a tool.
+We are a system of intelligence.
+Target Audience
+Enterprise companies
+SaaS platforms
+Fintech & high-risk systems
+Governments & security infrastructures
+Mission
+To provide organizations with real-time intelligence that enables confident, accurate, and immediate  
+action.
+Vision
+A world where every organization operates with an intelligent system continuously protecting and  
+guiding decisions.
+Core V alues
+Value Meaning
+Authority We lead with confidence and clarity
+Precision Every output is accurate and intentional
+Trust Built for critical environments
+Intelligence Insight that leads to action
+02 — BRAND PERSONALITY
+Guardian AI Behaves Like
+Calm
+Authoritative
+Structured
+Intelligent
+Reliable
+We Are
+✔ Precise
+✔ Confident
+✔ Direct
+✔ Trustworthy
+We Are Not
+❌ Loud
+❌ Trendy
+❌ Over-marketed
+❌ Flashy
+Rule:
+“If it feels like a startup, refine it. If it feels like infrastructure, it’ s correct.”
+03 — COLOUR SYSTEM
+Core Principle
+One color family dominates. Accents are controlled.
+Primary (AI Core System)
+Name HEX Usage
+Deep Navy #0B0F19 Main backgrounds
+Surface Navy #0F172A Cards
+Border #1E293B Dividers
+Primary Blue #2563EB CTAs
+Hover Blue #1D4ED8 Interaction
+AI Accent (Cyan) #4ABAFF Active states
+Light Mode (Marketing W ebsite)
+Name HEX Usage
+White #FFFFFF Base
+Light Gray #F9F AFB Sections
+Border Gray #E5E7EB Separation
+Color Distribution Rule
+70% → Base (White / Navy)
+20% → Structure (Gray / Borders)
+8% → Primary Blue
+2% → AI Accent
+Accent Rule (Critical)
+Use AI Cyan (#4ABAFF) only for:
+Active AI states
+Insights
+Real-time indicators
+Never use as background.
+Never overuse.
+04 — TYPOGRAPHY  SYSTEM
+Font Pairing
+Display (Authority):  Georgia, Cormorant Garamond
+UI / Body:  Inter , Barlow , Calibri
+Type Scale
+Level Size Use
+Hero 56–72px Landing
+H1 36px Sections
+H2 24px Sub-sections
+Body 14–16px Content
+Caption 12px Labels
+Rules
+Serif → authority only
+Sans → UI & readability
+Maintain hierarchy always
+05 — LOGO SYSTEM
+Components
+Shield → protection
+Core → intelligence
+Wordmark → authority
+Variants
+1. Full Logo (Primary)
+2. Icon Only
+3. Horizontal Navbar V ersion
+Usage
+Light background → dark logo
+Dark background → white logo
+Clear Space
+Minimum spacing = height of “G” in GUARDIAN
+Never
+Stretch
+Change colors
+Add glow
+Separate icon/text
+06 — UI SYSTEM
+Buttons
+Type Background Text / Border
+Primary #0F172A #FFFFFF
+Secondary Transparent #E5E7EB border , #111827 text
+Accent #2563EB #FFFFFF
+Cards
+White or Navy
+Soft shadow
+Rounded corners (8–12px)
+Spacing
+8pt grid
+24px padding
+48px sections
+07 — DESIGN LANGUAGE
+Guardian AI design is:
+✔ Minimal
+✔ Structured
+✔ High-contrast
+✔ Clean
+Avoid:
+❌ Too many colors
+❌ Heavy gradients
+❌ Over-animation
+08 — BRAND VOICE
+Tone
+Calm
+Direct
+Confident
+Measured
+Writing Rule
+“If it sounds like marketing, remove it.”
+Example:
+❌ “Revolutionary AI platform”
+✅ “Real-time intelligence for critical systems”
+09 — IMAGER Y STYLE
+Use
+Control rooms
+Data dashboards
+Real systems
+Dark environments
+Avoid
+Robots
+Abstract AI art
+Stock smiling teams
+10 — MOTION SYSTEM
+Element Duration
+Hover 0.2–0.3s
+Entry 0.4–0.6s
+Animation Style:
+Fade + slight upward
+Smooth easing
+No bounce
+11 — LA YOUT SYSTEM
+12-column grid
+Max width: 1200–1280px
+Consistent spacing
+12 — PRODUCT UI RULES
+Dark mode → Product
+Light mode → W ebsite
+Strategic Principle:
+This distinction defines Guardian AI’s visual intelligence boundary .
+13 — NEVER DO (STRICT)
+Use random colors
+Overuse cyan
+Add glow everywhere
+Break typography hierarchy
+Use hype language
+14 — MASTER BRAND FORMULA
+Minimal + Authority + Precision + Controlled Color
+Guardian AI represents enterprise intelligence — built for accuracy , speed, and reliability . Every  
+visual, word, and interaction must reflect calm authority and operational precision.
