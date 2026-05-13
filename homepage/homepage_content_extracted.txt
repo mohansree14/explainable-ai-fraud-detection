@@ -1,0 +1,1014 @@
+--- File: demo home page).pdf ---
+DOCUMENT
+💡 Why Guardian AI
+Built to secure modern digital platforms with intelligence and precision.
+🔹 Core V alue Points
+⚡ Real-T ime Protection
+Instant detection and response across content, users, and emerging threats.
+🧠 AI-Powered Intelligence
+Advanced adaptive models that continuously learn and evolve for higher accuracy .
+🔒 Scalable Security
+Engineered to protect platforms of every size — from startups to global enterprises.
+🌍 Multi-Platform Support
+Seamlessly integrates across apps, websites, and digital ecosystems for unified protection.
+Recommended Replacement for “T rusted by Industry” Section:
+Replace with this “Why Guardian AI” block to highlight capability , intelligence, and scalability instead  
+of external validation.
+
+
+--- File: home page changes.pdf ---
+DESIGN SYSTEM (STRICT)
+Use a dark AI theme:
+- Background: #020617
+- Secondary Background: #0B1F3A
+- Card: #0F172A
+- Border: #1E293B
+Primary Gradient:
+- Cyan (#22D3EE) → Blue (#3B82F6)
+Text:
+- Primary: #E2E8F0
+- Secondary: #94A3B8
+Typography:
+- Font: Inter / SF Pro
+- Bold, large headings (hero: 60px+)
+- Clean spacing (8pt grid system)
+---
+🧠 CORE DESIGN PRINCIPLE
+Everything must look like:
+✔ Intelligence panels
+✔ AI system blocks
+✔ Data-driven UI
+Avoid:
+❌ Marketing fluf f sections
+❌ Random colors
+❌ Basic UI
+---
+✨ ANIMA TIONS (FRAMER MOTION REQUIRED)
+- Smooth fade-up animations on scroll
+- Hover lift + glow on cards
+- Button scale interactions (hover + tap)
+- Page transitions (fade + slide)
+- Floating blurred gradient background elements
+- Stagger animations for lists
+---
+📄 PAGES TO BUILD
+---
+🏠 1. HOMEP AGE
+Sections:
+1. Navbar (glassmorphism + blur)
+   
+   - Logo (GuardianAI)
+   - Links: Platform, About, Team, Pricing, Contact
+   - CTA: "Launch Platform"
+2. Hero Section
+   
+   - Title:
+     "THE INTELLIGENT  SHIELD FOR ADVER TISING"
+   - Gradient text ef fect
+   - Subtitle (AI safety + intelligence positioning)
+   - Buttons:
+     - Start Analyzing
+     - Watch Demo
+   - Animated background glow
+3. Features Grid (4 cards)
+   
+   - Neural Content Analysis
+   - Policy Guardrails
+   - Real-time Enforcement
+   - Threat Intelligence
+4. AI System Section
+   
+   - Flow: Detection → V erification → Prediction → Action
+5. CT A Section
+   
+   - "Start protecting your platform today"
+6. Footer
+   
+   - Links + social icons
+---
+📘 2. ABOUT  PAGE
+Sections:
+1. Hero
+   
+   - "Building the Future of AI Safety"
+2. Stats (animated)
+   
+   - 500+ Platforms
+   - 100M+ Users
+   - 10B+ Events
+   - 99.8% Accuracy
+3. Mission & V ision (2 cards)
+4. Core V alues (grid)
+   
+   - Security First
+   - User-Centric
+   - Innovation
+   - Excellence
+5. Timeline (vertical glowing line)
+   
+   - 2019 → 2024 milestones
+---
+👥 3. TEAM P AGE
+- Grid layout (3 columns)
+- Each card:
+  - Avatar
+  - Name
+  - Role
+  - Short bio
+- Hover glow + lift animation
+- Section: Founder V ision
+---
+💰 4. PRICING P AGE
+3 plans:
+1. Starter
+2. Pro (highlighted with glow)
+3. Enterprise
+Each card includes:
+- Price
+- Features list
+- CTA button
+Add:
+- Toggle (Monthly / Yearly)
+- Highlight "Most Popular"
+---
+📞 5. CONT ACT PAGE
+- Clean form:
+  - Name
+  - Email
+  - Message
+- Submit button (gradient)
+- Optional:
+  - Contact info
+  - Map placeholder
+---
+🔐 6. AUTHENTICA TION
+A. Login Page
+- Email + Password
+- Gradient button
+- Link to Signup
+B. Signup Page
+- Name + Email + Password
+- Confirm password
+- CTA button
+C. UX:
+- Centered card
+- Dark glass panel
+- Smooth animation
+---
+🧩 COMPONENTS REQUIRED
+- Navbar (sticky + blur)
+- Footer
+- Button system (primary , secondary)
+- Cards (feature, pricing, team)
+- Form inputs
+- Panels (dashboard style)
+---
+⚙ FUNCTIONALITY
+- React + Tailwind CSS
+- React Router (multi-page navigation)
+- Zustand (state management)
+- Framer Motion (animations)
+- Fully responsive (mobile + desktop)
+---
+🎯 FINAL  OUTPUT  REQUIREMENTS
+- Clean folder structure
+- Reusable components
+- Production-ready code
+- Pixel-perfect UI
+- Smooth animations
+- Consistent design system
+---
+🔥 GOAL
+The final product should feel like:
+- Stripe Dashboard
+- OpenAI Platform
+- Vercel UI
+Perfect. Now we’re going full ultra-premium mode — this will upgrade your entire product to top-tier  
+SaaS quality (Stripe / Palantir level) while strictly following your dark blue + cyan gradient theme.
+No basic UI. No templates.
+👉 This is startup-grade, investor-ready design + system.
+---
+🧠 🎯  GUARDIAN AI — UL TRA PREMIUM SYSTEM (FINAL)
+---
+🎨 1. FINAL  COLOR SYSTEM (STRICT  — DO NOT  CHANGE)
+Use this everywhere:
+export const theme = {
+  bg: "#020617",
+  bgSoft: "#0B1F3A",
+  card: "#0F172A",
+  border: "#1E293B",
+  primary: "#3B82F6",
+  accent: "#22D3EE",
+  gradient: "from-cyan-400 via-blue-500 to-indigo-600",
+  text: "#E2E8F0",
+  muted: "#94A3B8",
+};
+---
+🌌 2. UL TRA PREMIUM NA VBAR (GLASS + GLOW)
+export default function Navbar() {
+  return (
+    <div className="fixed w-full z-50 backdrop-blur-xl bg-[#020617]/70 border-b border-[#1E293B] px-
+8 py-4 flex justify-between items-center">
+      
+      <h1 className="text-white font-bold text-lg tracking-wide">
+        GUARDIAN<span className="text-cyan-400">AI</span>
+      </h1>
+      <div className="hidden md:flex gap-8 text-gray-400 text-sm">
+        <a href="/" className="hover:text-white">Platform</a>
+        <a href="/about" className="hover:text-white">About</a>
+        <a href="/team" className="hover:text-white">T eam</a>
+        <a href="/pricing" className="hover:text-white">Pricing</a>
+        <a href="/contact" className="hover:text-white">Contact</a>
+      </div>
+      <div className="flex gap-3">
+        <a href="/login" className="px-4 py-2 border border-[#1E293B] rounded-lg text-sm">
+          Sign In
+        </a>
+        <a
+          href="/dashboard"
+          className="px-4 py-2 rounded-lg text-sm bg-gradient-to-r from-cyan-400 to-blue-500 text-
+black font-semibold shadow-lg shadow-cyan-500/20"
+        >
+          Launch Platform
+        </a>
+      </div>
+    </div>
+  );
+}
+---
+🚀 3. HERO SECTION (NEXT  LEVEL)
+export default function Hero() {
+  return (
+    <section className="min-h-screen flex flex-col justify-center items-center text-center px-6 bg-
+gradient-to-b from-[#020617] to-[#0B1F3A] text-white">
+      <span className="text-xs bg-cyan-500/10 text-cyan-400 px-4 py-1 rounded-full mb-6">
+        NEXT -GEN AI SAFETY  PLA TFORM
+      </span>
+      <h1 className="text-5xl md:text-7xl font-extrabold leading-tight">
+        THE INTELLIGENT
+        <br />
+        <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+          SHIELD FOR ADVER TISING
+        </span>
+      </h1>
+      <p className="text-gray-400 mt-6 max-w-2xl">
+        Unified AI platform for brand safety , fraud detection, and real-time decision intelligence.
+      </p>
+      <div className="mt-10 flex gap-4">
+        <button className="px-8 py-4 rounded-xl bg-gradient-to-r from-cyan-400 to-blue-500 text-black  
+font-semibold shadow-xl shadow-cyan-500/20 hover:scale-105 transition">
+          Start Analyzing →
+        </button>
+        <button className="px-8 py-4 border border-[#1E293B] rounded-xl">
+          Watch Demo
+        </button>
+      </div>
+    </section>
+  );
+}
+---
+🧩 4. FEA TURES (GLASS + HOVER GLOW)
+export default function Features() {
+  const items = [
+    "Neural Content Analysis",
+    "Policy Guardrails",
+    "Real-time Enforcement",
+    "Threat Intelligence",
+  ];
+  return (
+    <div className="grid md:grid-cols-4 gap-6 px-8 py-20">
+      {items.map((item, i) => (
+        <div
+          key={i}
+          className="p-6 rounded-2xl bg-[#0F172A] border border-[#1E293B] hover:border-cyan-400  
+hover:shadow-cyan-500/10 hover:shadow-lg transition"
+        >
+          <h3 className="font-semibold">{item}</h3>
+          <p className="text-gray-400 text-sm mt-2">
+            AI-powered intelligent automation.
+          </p>
+        </div>
+      ))}
+    </div>
+  );
+}
+---
+🧠 5. ABOUT  PAGE (UL TRA UPGRADE)
+Add:
+Glow stats
+AI storytelling
+Premium timeline
+Already gave structure → now ensure: ✔  Same gradient
+✔ No white background
+✔ Cyan highlights
+---
+👥 6. TEAM P AGE (PREMIUM PROFILE CARDS)
+export default function Team() {
+  const team = [
+    { name: "Sri Chandu", role: "Founder & AI Architect" },
+    { name: "CT O", role: "AI Infrastructure" },
+  ];
+  return (
+    <div className="px-8 py-20 text-white">
+      <h1 className="text-4xl font-bold text-center">Core Team</h1>
+      <div className="grid md:grid-cols-3 gap-8 mt-12">
+        {team.map((t, i) => (
+          <div className="bg-[#0F172A] border border-[#1E293B] rounded-2xl p-6 text-center  
+hover:shadow-lg hover:shadow-cyan-500/10 transition">
+            <div className="w-20 h-20 mx-auto bg-gray-700 rounded-full mb-4" />
+            <h3 className="font-semibold">{t.name}</h3>
+            <p className="text-gray-400 text-sm">{t.role}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+---
+💰 7. PRICING (GLOW + FOCUS PLAN)
+export default function Pricing() {
+  return (
+    <div className="px-8 py-20 text-white text-center">
+      <h1 className="text-4xl font-bold">Pricing</h1>
+      <div className="grid md:grid-cols-3 gap-8 mt-12">
+        <div className="bg-[#0F172A] border border-[#1E293B] p-6 rounded-xl">
+          Starter
+        </div>
+        <div className="bg-[#0F172A] border border-cyan-400 p-6 rounded-xl shadow-lg shadow-
+cyan-500/20 scale-105">
+          Pro (Most Popular)
+        </div>
+        <div className="bg-[#0F172A] border border-[#1E293B] p-6 rounded-xl">
+          Enterprise
+        </div>
+      </div>
+    </div>
+  );
+}
+---
+📞 8. CONT ACT (PREMIUM FORM)
+export default function Contact() {
+  return (
+    <div className="px-8 py-20 text-white">
+      <h1 className="text-3xl font-bold">Contact</h1>
+      <div className="mt-8 bg-[#0F172A] border border-[#1E293B] p-8 rounded-xl max-w-lg">
+        <input className="w-full p-3 bg-[#020617] mb-4" placeholder="Email" />
+        <textarea className="w-full p-3 bg-[#020617]" placeholder="Message" />
+        <button className="mt-4 bg-gradient-to-r from-cyan-400 to-blue-500 px-6 py-3 rounded-lg text-
+black font-semibold">
+          Send
+        </button>
+      </div>
+    </div>
+  );
+}
+---
+🔐 9. AUTH (PREMIUM LOGIN UI)
+export default function Login() {
+  return (
+    <div className="h-screen flex items-center justify-center bg-[#020617] text-white">
+      <div className="bg-[#0F172A] border border-[#1E293B] p-8 rounded-2xl w-80 shadow-xl">
+        <h2 className="text-xl font-bold">Sign In</h2>
+        <input className="w-full mt-4 p-2 bg-[#020617]" placeholder="Email" />
+        <input className="w-full mt-2 p-2 bg-[#020617]" placeholder="Password" />
+        <button className="w-full mt-4 py-2 rounded-lg bg-gradient-to-r from-cyan-400 to-blue-500  
+text-black font-semibold">
+          Login
+        </button>
+      </div>
+    </div>
+  );
+}
+---
+🧱 10. FOOTER (CLEAN + PREMIUM)
+export default function Footer() {
+  return (
+    <div className="border-t border-[#1E293B] px-8 py-8 text-gray-400 text-sm flex justify-between">
+      <span>© 2026 Guardian AI</span>
+      <div className="flex gap-4">
+        <span>T witter</span>
+        <span>LinkedIn</span>
+        <span>GitHub</span>
+      </div>
+    </div>
+  );
+}
+---
+🔥 FINAL  RESUL T
+After applying this:
+✅ Fully consistent dark AI theme
+✅ Ultra premium (no template feel)
+✅ Strong SaaS presence
+✅ Investor-ready UI
+✅ Matches your screenshot perfectly
+✅ Scalable for future features
+---
+🚀 NEXT  STEP  (IMPOR TANT)
+Now you MUST  do one:
+👉 “Connect backend (FastAPI + database + auth)”
+👉 “Deploy final production (V ercel + custom domain)”
+👉 “Add real AI system (fraud + prediction engine)”
+---
+If you want next level (crazy premium):
+Perfect. This is where your product goes from “premium” → “world-class”.
+We’ll add Framer Motion animations + micro-interactions that feel like Stripe / OpenAI UI level.
+---
+🚀 1. INST ALL FRAMER MOTION
+npm install framer-motion
+---
+🧠 2. GLOBAL  ANIMA TION SYSTEM (VER Y IMPOR TANT)
+Create reusable animation presets:
+// animations.js
+export const fadeUp = {
+  hidden: { opacity: 0, y: 40 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: "easeOut" },
+  },
+};
+export const stagger = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
+👉 This keeps your UI consistent + scalable
+---
+🌌 3. HERO ANIMA TION (WOW EFFECT)
+import { motion } from "framer-motion";
+import { fadeUp } from "../animations";
+export default function Hero() {
+  return (
+    <section className="min-h-screen flex flex-col justify-center items-center text-center px-6">
+      <motion.span
+        variants={fadeUp}
+        initial="hidden"
+        animate="show"
+        className="text-xs bg-cyan-500/10 text-cyan-400 px-4 py-1 rounded-full mb-6"
+      >
+        NEXT -GEN AI SAFETY  PLA TFORM
+      </motion.span>
+      <motion.h1
+        variants={fadeUp}
+        initial="hidden"
+        animate="show"
+        className="text-6xl font-bold"
+      >
+        THE INTELLIGENT
+        <br />
+        <span className="bg-gradient-to-r from-cyan-400 to-blue-500 text-transparent bg-clip-text">
+          SHIELD FOR ADVER TISING
+        </span>
+      </motion.h1>
+      <motion.div
+        variants={fadeUp}
+        initial="hidden"
+        animate="show"
+        className="mt-10 flex gap-4"
+      >
+        <button className="btn-primary">Start →</button>
+        <button className="btn-outline">Demo</button>
+      </motion.div>
+    </section>
+  );
+}
+---
+✨ 4. BUTT ON MICRO-INTERACTIONS (VER Y IMPOR TANT)
+<motion.button
+  whileHover={{ scale: 1.05 }}
+  whileT ap={{ scale: 0.95 }}
+  className="bg-gradient-to-r from-cyan-400 to-blue-500 px-6 py-3 rounded-xl"
+>
+  Start Analyzing
+</motion.button>
+👉 Feels alive + responsive
+---
+🧩 5. FEA TURE CARDS (HOVER GLOW + FLOA T)
+<motion.div
+  whileHover={{
+    y: -8,
+    scale: 1.02,
+    boxShadow: "0px 10px 30px rgba(34,21 1,238,0.15)",
+  }}
+  transition={{ type: "spring", stif fness: 200 }}
+  className="bg-[#0F172A] p-6 rounded-xl border border-[#1E293B]"
+>
+  Feature Card
+</motion.div>
+👉 This gives premium SaaS feel instantly
+---
+🧠 6. SCROLL  ANIMA TIONS (AUT O REVEAL)
+<motion.div
+  variants={fadeUp}
+  initial="hidden"
+  whileInV iew="show"
+  viewport={{ once: true }}
+>
+  <h2>Section Content</h2>
+</motion.div>
+👉 Animates only when visible → performance optimized
+---
+🌊 7. NA VBAR MICRO INTERACTION
+<motion.div
+  initial={{ y: -60 }}
+  animate={{ y: 0 }}
+  transition={{ duration: 0.5 }}
+  className="fixed top-0 w-full"
+>
+  Navbar
+</motion.div>
+---
+🧬 8. PAGE TRANSITIONS (INSANE UPGRADE)
+In App.jsx:
+import { AnimatePresence } from "framer-motion";
+import { useLocation } from "react-router-dom";
+function App() {
+  const location = useLocation();
+  return (
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        {/* your routes */}
+      </Routes>
+    </AnimatePresence>
+  );
+}
+---
+🔄 Page Animation W rapper
+export const pageAnim = {
+  hidden: { opacity: 0, y: 30 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.4 } },
+  exit: { opacity: 0, y: -20 },
+};
+Use:
+<motion.div
+  variants={pageAnim}
+  initial="hidden"
+  animate="show"
+  exit="exit"
+>
+  Page Content
+</motion.div>
+---
+🔥 9. FLOA TING GLOW BACKGROUND (NEXT  LEVEL)
+Add this behind hero:
+<motion.div
+  animate={{
+    x: [0, 50, 0],
+    y: [0, -30, 0],
+  }}
+  transition={{
+    duration: 10,
+    repeat: Infinity ,
+  }}
+  className="absolute w-72 h-72 bg-cyan-500/20 blur-3xl rounded-full"
+/>
+👉 This creates AI ambient motion (very premium)
+---
+🎯 10. KPI COUNT  ANIMA TION
+<motion.h2
+  initial={{ opacity: 0 }}
+  whileInV iew={{ opacity: 1 }}
+  transition={{ duration: 1 }}
+>
+  500+
+</motion.h2>
+(Advanced: can add count-up later)
+---
+🧠 FINAL  RESUL T
+After adding this:
+✅ Smooth page transitions
+✅ Interactive hover ef fects
+✅ Scroll-based reveal
+✅ Animated hero
+✅ Floating AI background
+✅ Micro-interactions everywhere
+---
+🔥 WHA T YOU JUST  BUIL T
+This now feels like:
+👉 Stripe Dashboard
+👉 Vercel UI
+👉 OpenAI product pages
+---
+🚀 NEXT  LEVEL  (IF YOU W ANT INSANE UI)
+Say:
+👉 “Add 3D UI (parallax + depth + AI layers)”
+👉 “Add real-time data animations (live dashboard)”
+👉 “Add AI chat assistant UI (like ChatGPT)”
+---
+You’ve now crossed into top 1% product UI level 🔥
+Next
+
+
+--- File: Untitled design (23).pdf ---
+GUARDIAN AI — COMPLETE SETTINGS SPEC (FINAL)
+🧱 1. 👤  Profile & Organization
+🔹 Profile Information
+Full Name (editable)
+Email Address
+Verify Email (OTP  flow)
+Profile Picture (upload + preview)
+🔹 Organization Details
+Company Name
+Organization Type:
+Startup
+Enterprise
+Agency
+Organization ID (auto-generated, read-only)
+🔹 Preferences
+Time Zone (dropdown with search)
+Language (EN, future multi-language)
+🔹 Appearance
+Theme Mode:
+Light
+Dark
+System default
+UI Density:
+Comfortable
+Compact
+🔹 Dashboard Preferences
+Default landing page
+Layout:
+Grid
+List
+Widget customization:
+Drag & drop
+Save layout
+🔒 2. Security & Access
+🔐 Authentication
+Change Password
+Password strength indicator (weak → strong)
+🔐 Two-Factor Authentication (2F A)
+Enable / Disable
+Methods:
+Authenticator app (Google Authenticator)
+Email OTP
+Backup codes (download)
+🖥 Login Activity
+Last login (time, IP , device)
+Login history list
+📱 Active Sessions
+List of logged-in devices
+“Logout from all devices” button
+🛡 Account Recovery
+Recovery email
+Backup codes
+👮 Access Control
+Role-based permissions:
+Admin
+Analyst
+Viewer
+(Advanced: Permission matrix)
+💳 3. Billing & Subscription
+💼 Current Plan
+Starter / Pro / Business / Enterprise
+Plan features breakdown
+🔄 Plan Management
+Upgrade / Downgrade
+Prorated billing
+💰 Payment Methods
+🌍 Global:
+Credit/Debit Cards (Visa, Mastercard, Amex)
+Stripe Checkout
+Apple Pay / Google Pay
+🇮🇳 India:
+UPI (GPay , PhonePe, Paytm)
+Net Banking
+Wallets
+🧾 Billing Settings
+Billing cycle:
+Monthly
+Yearly (discount badge)
+Auto-renew toggle
+📄 Billing History
+Invoice list
+Download PDF
+🎟 Discounts
+Coupon code input
+Apply / Remove
+📊 Usage-Based Billing (ADV ANCED)
+Cost per API call
+Overages
+Usage alerts
+👥 4. Team & Collaboration
+➕ Invite Members
+Email input
+Bulk invite (CSV optional)
+👤 Roles
+Admin (full access)
+Analyst (moderation + analytics)
+Viewer (read-only)
+📋 Members List
+Name, role, status
+Last active
+⚙ Actions
+Edit role
+Remove user
+Suspend account
+🔐 Permissions (Advanced)
+Feature-level access:
+Moderation
+Analytics
+Billing
+API
+📊 Activity T racking
+Per-user activity logs
+Actions performed
+🔔 5. Notifications & Alerts
+📧 Notification Channels
+Email (ON/OFF)
+In-app alerts
+Slack integration
+Webhooks
+🚨 Alert T ypes
+Moderation alerts
+Security alerts
+API usage alerts
+System errors
+⚙ Alert Severity
+Low
+Medium
+High
+⏱ Frequency
+Real-time
+Daily summary
+Weekly summary
+🎯 Custom Alerts
+Trigger conditions:
+High-risk content detected
+API usage > 80%
+Suspicious login
+⚙ 6. System, Integrations & Compliance
+🔑 API Management
+Generate API key
+Copy API key
+Regenerate key
+Scoped keys (optional advanced)
+🌍 Region & Compliance
+Data Region:
+India
+Europe
+USA
+Compliance Toggles:
+GDPR
+India IT  Rules
+CCPA (future-ready)
+📦 Data Retention
+7 days
+30 days
+90 days
+Custom
+🧹 Data Controls
+Export data
+Delete account
+📜 SIDE P ANEL  — Audit Logs (IMPORT ANT)
+Includes:
+User activity logs
+Security events
+API usage logs
+System events
+Filters:
+By user
+By action
+By severity
+Export:
+CSV / JSON
+🆘 SUPPORT (FOOTER)
+Help Center
+Contact Support
+Submit Ticket
+System Status Page
+
+
+--- File: Untitled design (24).pdf ---
+🔒 GUARDIAN AI — CORE PRIV ACY  POLICY  (TOP 10)
+1. Information W e Collect
+Personal data: name, email, company , billing details
+Usage data: IP  address, device information, activity logs
+Content data: text, images, and AI-generated results
+2. How W e Use Your Information
+Provide and maintain services
+Process payments and subscriptions
+Improve AI models and system performance
+Detect fraud and security risks
+Send service updates and alerts
+3. Data Sharing & Disclosure
+No sale of personal data
+Shared only with:
+Payment providers (Stripe, Razorpay)
+Cloud providers (AWS)
+Legal authorities (when required by law)
+4. Data Retention
+Retention based on plan: 7 / 30 / 90 days
+Users may request data deletion
+Temporary backups maintained for security
+5. Security Measures
+SSL/TLS encryption for data in transit
+Secure encrypted storage
+Role-based access control
+Regular internal and external audits
+6. Your Rights
+Access and review personal data
+Correct or update information
+Request deletion of data
+Request data portability
+Object to certain processing activities
+7. GDPR & Compliance
+Fully GDPR-compliant for EU users
+Lawful processing based on consent and legitimate interest
+Supports compliance with global data protection standards
+8. Cookies & T racking
+Used to enhance user experience
+Analyze usage and performance
+Maintain login sessions
+Users can disable cookies in browser settings
+9. Third-Party Services
+Payment gateways (Stripe, Razorpay)
+Cloud and infrastructure providers
+Analytics and monitoring tools
+Each third party operates under its own privacy policy
+10. Changes & Contact
+Policy subject to updates or revisions
+Notification provided for major changes
+Contact for privacy inquiries:
+support@guardianai.co.in
+info@guardianai.co.in
+🎯 End of Core Privacy Policy Summary
+
+
+--- File: Untitled design (25).pdf ---
+📜 GUARDIAN AI — CORE TERMS & CONDITIONS (T OP 8)
+1. Use of Services
+Use the platform only for lawful and authorized purposes
+No misuse, hacking, or unauthorized access
+No copying, reverse-engineering, or tampering with system components
+2. Account Registration
+Provide accurate and up-to-date information
+Keep login credentials confidential and secure
+Account holders are responsible for all actions under their account
+3. Subscription & Billing
+Subscription options: monthly or yearly plans
+Payments processed via Stripe, Razorpay , or other approved gateways
+Auto-renewal enabled by default with cancellation option
+Pricing and plan changes communicated in advance
+4. Acceptable Use Policy
+Users must NOT :
+Upload or distribute illegal, harmful, or of fensive content
+Violate any applicable laws or third-party rights
+Attempt to bypass or disable system safeguards
+Misuse AI tools for malicious or unethical purposes
+5. AI Limitations Disclaimer
+AI outputs may not always be accurate or complete
+Users retain full responsibility for decisions made using AI results
+Guardian AI is not liable for errors, omissions, or missed detections
+6. Data & Privacy
+Data handling governed by the Guardian AI Privacy Policy
+Data used solely for:
+Service delivery and maintenance
+AI model improvement
+Security and compliance monitoring
+7. Intellectual Property
+All software, AI models, content, and branding are owned by Guardian AI
+No copying, redistribution, or derivative works without written consent
+Users retain ownership of their uploaded content
+8. Termination & Liability
+Accounts may be suspended or terminated for policy violations
+Users may cancel subscriptions at any time
+Guardian AI is not liable for:
+Data loss or corruption
+Service interruptions
+Indirect, incidental, or consequential damages
+🎯 End of Core T erms & Conditions Summary
+
+
+--- File: Untitled design (26).pdf ---
+Canva AI cannot directly generate or attach a PDF file, but the content can be copied into Canva , 
+Google Docs , or any text editor and exported as a PDF instantly .
+Here’ s the exact content to paste before exporting:
+🚀 Guardian AI — Final Footer Design  
+(Updated)
+🧱 Structure
+🔹 1. Top Section (Brand + Social)
+Left:
+GUARDIAN AI
+AI-powered safety & moderation platform
+Right (Social Icons):
+YouTube
+Twitter (X)
+LinkedIn
+Instagram
+Style:
+Rounded square buttons
+Dark background
+Light icons
+Hover glow
+📂 2. Link Sections (Clean Grid)
+🟦 Product
+Dashboard
+Pricing
+Integrations
+🟪 Solutions
+Enterprise
+Startups
+Communities
+🟩 Resources
+Docs
+API Docs
+Help Center
+Blog
+🟨 Company
+About
+Contact
+Careers (optional later)
+⚖ 3. Legal (Important)
+Privacy Policy
+Terms & Conditions
+📍 4. Bottom Line
+© 2026 Guardian AI. All rights reserved.
+🌍 India | Europe | USA
+🎨 UI Style
+Dark background: #0F172A
+Soft gray text
+White headings
+Spacing:
+2 columns (mobile)
+4 columns (desktop)
+🔥 Remove
+Affiliate Program
+App Market
+Extra links
+⚡ Final Mobile Layout
+[Logo + T agline]
+[Social Icons Row]
+Product
+Dashboard
+Pricing
+Integrations
+Solutions
+Enterprise
+Startups
+Resources
+Docs
+API Docs
+Help Center
+Company
+About
+Contact
+Privacy Policy | T erms & Conditions
+© 2026 Guardian AI
+India | EU | USA
+To export as PDF:
+1. Copy this content into Canva , Google Docs , or Notion .
+2. Adjust typography and spacing.
+3. Select File → Download → PDF .
+
+
+--- File: Untitled design (28).pdf ---
+DOCUMENT
+✅ Comprehensive Protection Suite
+Six powerful modules working together to keep the platform safe, compliant, and scalable.
+🔹 Modules + Importance
+1. Content Moderation
+Ensures all user-generated content stays safe, appropriate, and platform-compliant.
+2. Policy Enforcement
+Automatically applies and maintains rules to keep the community aligned with guidelines.
+3. Research & Analytics
+Provides insights into trends, risks, and user behavior for smarter decision-making.
+4. Threat Response
+Detects and responds to threats in real time to prevent crises and platform abuse.
+5. Ad & Brand Safety
+Protects brand reputation by ensuring ads and content meet safety standards.
+6. AI Marketing Intelligence
+Drives growth with data-driven insights, automation, and campaign optimization.
+🎯 UI Structure (Clean + Premium)
+Each module card layout:
+[ Icon ]
+Module Name
+Short importance line (1 sentence only)
+Minimal, balanced spacing
+Consistent icon style (outline or duotone)
+Subtle hover elevation
+Dark background with soft contrast text
+Grid layout: 3 cards per row (desktop), 1 per row (mobile)
+
+
+--- File: Untitled design (29).pdf ---
+DOCUMENT
+💡 Why Guardian AI
+Built to secure modern digital platforms with intelligence and precision.
+🔹 Core V alue Points
+⚡ Real-T ime Protection
+Instant detection and response across content, users, and emerging threats.
+🧠 AI-Powered Intelligence
+Advanced adaptive models that continuously learn and evolve for higher accuracy .
+🔒 Scalable Security
+Engineered to protect platforms of every size — from startups to global enterprises.
+🌍 Multi-Platform Support
+Seamlessly integrates across apps, websites, and digital ecosystems for unified protection.
+Recommended Replacement for “T rusted by Industry” Section:
+Replace with this “Why Guardian AI” block to highlight capability , intelligence, and scalability instead  
+of external validation.
+
+

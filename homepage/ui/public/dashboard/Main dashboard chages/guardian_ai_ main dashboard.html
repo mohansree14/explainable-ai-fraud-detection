@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guardian AI — Safety · Intelligence · Control</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#020617;--surface:#0f172a;--card:#0f172a;--border:#1e293b;--border2:#243044;
+  --primary:#3b82f6;--accent:#22d3ee;--green:#10b981;--yellow:#f59e0b;
+  --red:#ef4444;--purple:#a855f7;--pink:#ec4899;--orange:#f97316;
+  --text:#e2e8f0;--muted:#64748b;--muted2:#94a3b8;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 70% 50% at 15% 0%,rgba(59,130,246,0.07) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 85% 100%,rgba(34,211,238,0.05) 0%,transparent 60%);pointer-events:none;z-index:0}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+
+/* LAYOUT */
+.app{display:flex;min-height:100vh;position:relative;z-index:1}
+
+/* SIDEBAR */
+.sidebar{
+  width:240px;flex-shrink:0;background:rgba(15,23,42,0.95);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  position:fixed;top:0;left:0;bottom:0;z-index:50;
+  transition:width 0.25s;overflow:hidden;
+}
+.sidebar.collapsed{width:60px}
+.sidebar-logo{
+  padding:18px 16px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:10px;flex-shrink:0;
+}
+.logo-icon{
+  width:36px;height:36px;border-radius:10px;flex-shrink:0;
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  display:flex;align-items:center;justify-content:center;font-size:18px;
+}
+.logo-info{overflow:hidden;white-space:nowrap}
+.logo-name{font-size:15px;font-weight:700;letter-spacing:-0.3px}
+.logo-tag{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted2);letter-spacing:1.5px;margin-top:1px}
+
+.sidebar-nav{flex:1;padding:12px 8px;overflow-y:auto;overflow-x:hidden}
+.nav-section-label{
+  font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;
+  text-transform:uppercase;color:var(--muted);padding:10px 8px 6px;
+  white-space:nowrap;overflow:hidden;
+}
+.sidebar.collapsed .nav-section-label{opacity:0}
+.nav-item{
+  display:flex;align-items:center;gap:10px;padding:9px 10px;
+  border-radius:8px;cursor:pointer;transition:all 0.15s;
+  color:var(--muted2);font-size:13px;font-weight:500;
+  white-space:nowrap;overflow:hidden;margin-bottom:2px;
+}
+.nav-item:hover{background:rgba(255,255,255,0.05);color:var(--text)}
+.nav-item.active{background:rgba(59,130,246,0.12);color:#93c5fd;border:1px solid rgba(59,130,246,0.2)}
+.nav-icon{font-size:16px;flex-shrink:0;width:20px;text-align:center}
+.nav-text{overflow:hidden;text-overflow:ellipsis}
+.nav-badge{
+  margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:9px;
+  padding:2px 6px;border-radius:3px;background:rgba(239,68,68,0.15);
+  color:#f87171;border:1px solid rgba(239,68,68,0.2);flex-shrink:0;
+}
+.sidebar.collapsed .nav-text,.sidebar.collapsed .nav-badge,.sidebar.collapsed .nav-section-label{display:none}
+
+.sidebar-toggle{
+  padding:12px 16px;border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:flex-end;
+  cursor:pointer;color:var(--muted);font-size:18px;
+  transition:color 0.15s;flex-shrink:0;
+}
+.sidebar-toggle:hover{color:var(--text)}
+
+/* MAIN */
+.main{flex:1;margin-left:240px;transition:margin-left 0.25s;min-height:100vh;display:flex;flex-direction:column}
+.main.collapsed{margin-left:60px}
+
+/* TOPBAR */
+.topbar{
+  position:sticky;top:0;z-index:40;height:60px;
+  background:rgba(2,6,23,0.92);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:12px;padding:0 24px;
+  flex-shrink:0;
+}
+.topbar-search{
+  flex:1;max-width:360px;position:relative;
+}
+.topbar-search input{
+  width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--border);
+  border-radius:8px;padding:8px 12px 8px 36px;
+  font-family:'Outfit',sans-serif;font-size:13px;color:var(--text);
+  outline:none;transition:border-color 0.2s;
+}
+.topbar-search input:focus{border-color:rgba(59,130,246,0.4)}
+.topbar-search input::placeholder{color:var(--muted)}
+.search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:14px}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.topbar-btn{
+  width:36px;height:36px;border-radius:8px;border:1px solid var(--border);
+  background:rgba(255,255,255,0.03);display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:16px;transition:all 0.15s;position:relative;
+}
+.topbar-btn:hover{background:rgba(255,255,255,0.07);border-color:var(--border2)}
+.notif-dot{
+  position:absolute;top:6px;right:6px;width:7px;height:7px;
+  border-radius:50%;background:var(--red);border:2px solid var(--bg);
+}
+.user-pill{
+  display:flex;align-items:center;gap:8px;padding:5px 12px 5px 5px;
+  border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,0.03);
+  cursor:pointer;transition:all 0.15s;
+}
+.user-pill:hover{background:rgba(255,255,255,0.06)}
+.user-avatar{
+  width:28px;height:28px;border-radius:6px;
+  background:linear-gradient(135deg,var(--primary),var(--purple));
+  display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;
+}
+.user-name{font-size:12px;font-weight:500}
+.status-dot-live{
+  width:7px;height:7px;border-radius:50%;background:var(--green);
+  box-shadow:0 0 6px var(--green);animation:pulse-dot 2s infinite;
+}
+@keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:0.4}}
+
+/* PAGE CONTENT */
+.page-content{flex:1;padding:28px 24px 60px;display:none}
+.page-content.active{display:block;animation:fadeIn 0.3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* PAGE HEADER */
+.page-header{margin-bottom:28px}
+.page-header h1{font-size:24px;font-weight:800;letter-spacing:-0.5px;margin-bottom:4px}
+.page-header p{font-size:13px;color:var(--muted2)}
+.breadcrumb{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px;margin-bottom:8px}
+
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px}
+.card-sm{padding:16px}
+.card:hover{border-color:var(--border2)}
+
+/* GRID */
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.grid-auto{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+@media(max-width:900px){.grid-4{grid-template-columns:repeat(2,1fr)}.grid-3{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.grid-4,.grid-3,.grid-2{grid-template-columns:1fr}}
+.gap-16{gap:16px}
+.flex{display:flex}.flex-col{flex-direction:column}.items-center{align-items:center}
+.justify-between{justify-content:space-between}.gap-8{gap:8px}.gap-12{gap:12px}
+.mt-8{margin-top:8px}.mt-12{margin-top:12px}.mt-16{margin-top:16px}.mt-20{margin-top:20px}.mt-24{margin-top:24px}
+.mb-16{margin-bottom:16px}.mb-20{margin-bottom:20px}.mb-24{margin-bottom:24px}
+.space-y>*+*{margin-top:16px}
+
+/* METRIC CARD */
+.metric-card{
+  background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;
+  position:relative;overflow:hidden;transition:all 0.2s;cursor:default;
+}
+.metric-card::before{
+  content:'';position:absolute;top:0;right:0;width:60px;height:60px;
+  background:radial-gradient(circle,var(--mc-color,rgba(59,130,246,0.15)) 0%,transparent 70%);
+  border-radius:50%;transform:translate(10px,-10px);
+}
+.metric-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.metric-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;color:var(--muted2);text-transform:uppercase;margin-bottom:8px}
+.metric-value{font-size:28px;font-weight:800;letter-spacing:-1px;color:var(--text)}
+.metric-sub{font-size:11px;color:var(--muted);margin-top:4px;font-family:'JetBrains Mono',monospace}
+.metric-trend{font-size:11px;margin-top:6px;font-weight:600}
+.trend-up{color:var(--green)}.trend-down{color:var(--red)}.trend-flat{color:var(--yellow)}
+
+/* STATUS PILLS */
+.pill{display:inline-flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:10px;padding:3px 10px;border-radius:20px;font-weight:500}
+.pill-dot{width:5px;height:5px;border-radius:50%;background:currentColor}
+.pill.green{background:rgba(16,185,129,0.12);color:#34d399;border:1px solid rgba(16,185,129,0.25)}
+.pill.red{background:rgba(239,68,68,0.12);color:#f87171;border:1px solid rgba(239,68,68,0.25)}
+.pill.yellow{background:rgba(245,158,11,0.12);color:#fbbf24;border:1px solid rgba(245,158,11,0.25)}
+.pill.blue{background:rgba(59,130,246,0.12);color:#93c5fd;border:1px solid rgba(59,130,246,0.25)}
+.pill.purple{background:rgba(168,85,247,0.12);color:#c084fc;border:1px solid rgba(168,85,247,0.25)}
+.pill.cyan{background:rgba(34,211,238,0.12);color:#67e8f9;border:1px solid rgba(34,211,238,0.25)}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:8px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.15s;border:none;outline:none}
+.btn-primary{background:var(--primary);color:#fff}.btn-primary:hover{background:#2563eb}
+.btn-accent{background:var(--accent);color:#020617}.btn-accent:hover{background:#06b6d4}
+.btn-danger{background:var(--red);color:#fff}.btn-danger:hover{background:#dc2626}
+.btn-success{background:var(--green);color:#fff}.btn-success:hover{background:#059669}
+.btn-warning{background:var(--yellow);color:#020617}.btn-warning:hover{background:#d97706}
+.btn-ghost{background:rgba(255,255,255,0.05);color:var(--text);border:1px solid var(--border)}.btn-ghost:hover{background:rgba(255,255,255,0.09)}
+.btn-sm{padding:6px 12px;font-size:12px}
+.btn:disabled{opacity:0.5;cursor:not-allowed}
+
+/* INPUT */
+.input{
+  width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--border);
+  border-radius:8px;padding:10px 14px;font-family:'Outfit',sans-serif;
+  font-size:13px;color:var(--text);outline:none;transition:border-color 0.2s;
+}
+.input:focus{border-color:rgba(59,130,246,0.5);background:rgba(59,130,246,0.04)}
+.input::placeholder{color:var(--muted)}
+textarea.input{resize:vertical;min-height:100px}
+
+/* COMMAND BAR */
+.cmd-bar{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px}
+.cmd-bar-row{display:flex;gap:10px}
+.cmd-response{
+  margin-top:16px;padding:16px;background:rgba(34,211,238,0.04);
+  border:1px solid rgba(34,211,238,0.15);border-radius:10px;
+  animation:fadeIn 0.3s ease;
+}
+.cmd-response-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:10px}
+.cmd-r-item{background:rgba(255,255,255,0.03);border-radius:8px;padding:12px}
+.cmd-r-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px}
+.cmd-r-value{font-size:14px;font-weight:600}
+
+/* LOADING */
+.loading-dots{display:flex;gap:4px;align-items:center}
+.loading-dots span{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:blink 1.2s infinite}
+.loading-dots span:nth-child(2){animation-delay:0.2s}
+.loading-dots span:nth-child(3){animation-delay:0.4s}
+@keyframes blink{0%,80%,100%{opacity:0.2}40%{opacity:1}}
+
+/* ACTIVITY FEED */
+.feed-item{
+  display:flex;align-items:center;gap:12px;padding:10px 14px;
+  border-radius:8px;border:1px solid transparent;
+  transition:all 0.2s;font-size:12px;
+}
+.feed-item:hover{background:rgba(255,255,255,0.03);border-color:var(--border)}
+.feed-item.new{animation:slideIn 0.4s ease}
+@keyframes slideIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
+.feed-icon{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.feed-text{flex:1}
+.feed-event{font-weight:500;color:var(--text)}
+.feed-time{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-top:1px}
+.feed-sev{flex-shrink:0}
+
+/* MODULE CARDS */
+.module-card{
+  background:var(--card);border:1px solid var(--border);border-radius:12px;
+  padding:20px;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden;
+}
+.module-card::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at top right,var(--mc-glow,rgba(59,130,246,0.08)) 0%,transparent 60%);
+  opacity:0;transition:opacity 0.2s;
+}
+.module-card:hover{border-color:var(--mc-border,rgba(59,130,246,0.3));transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,0.3)}
+.module-card:hover::before{opacity:1}
+.module-icon{font-size:24px;margin-bottom:12px}
+.module-name{font-size:14px;font-weight:700;margin-bottom:4px}
+.module-desc{font-size:11px;color:var(--muted2)}
+.module-arrow{
+  position:absolute;bottom:16px;right:16px;
+  color:var(--muted);font-size:16px;transition:all 0.2s;
+}
+.module-card:hover .module-arrow{color:var(--text);transform:translateX(3px)}
+
+/* SCAN RESULT */
+.scan-result{
+  padding:16px;border-radius:10px;border:1px solid;margin-top:16px;
+  animation:fadeIn 0.3s ease;
+}
+.scan-result.safe{background:rgba(16,185,129,0.06);border-color:rgba(16,185,129,0.2)}
+.scan-result.warning{background:rgba(245,158,11,0.06);border-color:rgba(245,158,11,0.2)}
+.scan-result.danger{background:rgba(239,68,68,0.06);border-color:rgba(239,68,68,0.2)}
+.scan-result h3{font-size:14px;font-weight:700;margin-bottom:8px}
+.scan-meter{height:6px;background:var(--border);border-radius:3px;margin:10px 0}
+.scan-meter-fill{height:100%;border-radius:3px;transition:width 0.8s ease}
+
+/* TABLE */
+.table-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:12px}
+thead{background:rgba(255,255,255,0.03)}
+th{padding:10px 16px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;font-weight:500;border-bottom:1px solid var(--border)}
+td{padding:11px 16px;border-bottom:1px solid rgba(30,41,59,0.5);color:var(--muted2)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,0.02);color:var(--text)}
+
+/* CHART BARS */
+.chart-bar-wrap{display:flex;flex-direction:column;gap:8px}
+.chart-bar-row{display:flex;align-items:center;gap:10px}
+.chart-bar-label{font-size:11px;color:var(--muted2);width:100px;flex-shrink:0;font-family:'JetBrains Mono',monospace}
+.chart-bar-track{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden}
+.chart-bar-fill{height:100%;border-radius:4px;transition:width 1s ease}
+.chart-bar-val{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted2);width:36px;text-align:right;flex-shrink:0}
+
+/* RULE ITEM */
+.rule-item{
+  display:flex;align-items:center;gap:12px;padding:12px 16px;
+  background:rgba(255,255,255,0.02);border:1px solid var(--border);
+  border-radius:8px;margin-bottom:8px;transition:all 0.15s;
+}
+.rule-item:hover{background:rgba(255,255,255,0.04)}
+.rule-name{flex:1;font-size:13px;font-weight:500}
+.rule-desc{font-size:11px;color:var(--muted2);margin-top:2px}
+
+/* THREAT ITEM */
+.threat-item{
+  padding:14px 16px;background:rgba(255,255,255,0.02);
+  border:1px solid var(--border);border-radius:10px;margin-bottom:8px;
+  transition:all 0.15s;
+}
+.threat-item:hover{background:rgba(255,255,255,0.04)}
+.threat-header{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.threat-name{font-size:13px;font-weight:600;flex:1}
+.threat-detail{font-size:11px;color:var(--muted2)}
+.threat-actions{display:flex;gap:8px;margin-top:10px}
+
+/* INSIGHT PANEL */
+.insight-panel{
+  background:linear-gradient(135deg,rgba(34,211,238,0.06),rgba(59,130,246,0.04));
+  border:1px solid rgba(34,211,238,0.15);border-radius:12px;padding:16px 20px;
+  display:flex;align-items:center;gap:12px;
+}
+.insight-icon{font-size:20px;flex-shrink:0}
+.insight-text{font-size:13px;color:#a5f3fc;line-height:1.5}
+.insight-text strong{color:var(--accent)}
+
+/* WELCOME SECTION */
+.welcome-banner{
+  background:linear-gradient(135deg,rgba(59,130,246,0.08),rgba(34,211,238,0.04));
+  border:1px solid rgba(59,130,246,0.15);border-radius:16px;padding:24px 28px;
+  margin-bottom:24px;
+}
+.welcome-title{font-size:22px;font-weight:800;letter-spacing:-0.5px;margin-bottom:4px}
+.welcome-sub{font-size:13px;color:var(--muted2)}
+.welcome-stats{display:flex;gap:24px;margin-top:16px;flex-wrap:wrap}
+.w-stat{display:flex;align-items:center;gap:8px}
+.w-stat-icon{font-size:16px}
+.w-stat-val{font-size:13px;font-weight:600}
+.w-stat-label{font-size:11px;color:var(--muted2);margin-top:1px;font-family:'JetBrains Mono',monospace}
+
+/* SECTION TITLE */
+.section-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.section-title span{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);background:rgba(255,255,255,0.05);padding:2px 8px;border-radius:4px;letter-spacing:1px}
+
+/* TOGGLE */
+.toggle{
+  position:relative;width:40px;height:22px;border-radius:11px;
+  background:var(--border);cursor:pointer;transition:background 0.2s;flex-shrink:0;
+}
+.toggle.on{background:var(--primary)}
+.toggle::after{
+  content:'';position:absolute;top:3px;left:3px;
+  width:16px;height:16px;border-radius:50%;background:#fff;
+  transition:transform 0.2s;
+}
+.toggle.on::after{transform:translateX(18px)}
+
+/* DIVIDER */
+.divider{height:1px;background:var(--border);margin:20px 0}
+
+/* SCROLL AREA */
+.scroll-area{max-height:320px;overflow-y:auto;padding-right:4px}
+
+/* MINI TAG */
+.tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:10px;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,0.05);color:var(--muted2);border:1px solid rgba(255,255,255,0.07)}
+
+/* PROGRESS RING (for health) */
+.health-ring{position:relative;width:80px;height:80px;flex-shrink:0}
+.health-ring svg{transform:rotate(-90deg)}
+.health-ring .ring-val{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:16px;font-weight:800;
+}
+
+/* RESPONSIVE SIDEBAR */
+@media(max-width:768px){
+  .sidebar{width:60px}
+  .sidebar .nav-text,.sidebar .nav-badge,.sidebar .nav-section-label,.sidebar .logo-info{display:none}
+  .main{margin-left:60px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- ══════════════════ SIDEBAR ══════════════════ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">🛡️</div>
+    <div class="logo-info">
+      <div class="logo-name">Guardian AI</div>
+      <div class="logo-tag">Safety · Intel · Control</div>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">MAIN</div>
+    <div class="nav-item active" onclick="navigate('dashboard',this)"><span class="nav-icon">🏠</span><span class="nav-text">Dashboard</span></div>
+
+    <div class="nav-section-label">CORE MODULES</div>
+    <div class="nav-item" onclick="navigate('moderation',this)"><span class="nav-icon">🛡️</span><span class="nav-text">Content Moderation</span><span class="nav-badge">24</span></div>
+    <div class="nav-item" onclick="navigate('policy',this)"><span class="nav-icon">📜</span><span class="nav-text">Policy Enforcement</span></div>
+    <div class="nav-item" onclick="navigate('analytics',this)"><span class="nav-icon">📊</span><span class="nav-text">Research & Analytics</span></div>
+    <div class="nav-item" onclick="navigate('brand',this)"><span class="nav-icon">✨</span><span class="nav-text">Brand Safety</span></div>
+    <div class="nav-item" onclick="navigate('threat',this)"><span class="nav-icon">🚨</span><span class="nav-text">Threat Response</span><span class="nav-badge">3</span></div>
+    <div class="nav-item" onclick="navigate('marketing',this)"><span class="nav-icon">📈</span><span class="nav-text">Marketing Intel</span></div>
+
+    <div class="nav-section-label">INTEGRATION SUITE</div>
+    <div class="nav-item" onclick="navigate('fraud',this)"><span class="nav-icon">💰</span><span class="nav-text">Fraud Detection</span></div>
+    <div class="nav-item" onclick="navigate('identity',this)"><span class="nav-icon">🧬</span><span class="nav-text">Identity Verify</span></div>
+    <div class="nav-item" onclick="navigate('logs',this)"><span class="nav-icon">📋</span><span class="nav-text">AI Log Center</span></div>
+    <div class="nav-item" onclick="navigate('safety',this)"><span class="nav-icon">🚫</span><span class="nav-text">Content Safety AI</span></div>
+  </nav>
+
+  <div class="sidebar-toggle" onclick="toggleSidebar()">◀</div>
+</aside>
+
+<!-- ══════════════════ MAIN ══════════════════ -->
+<div class="main" id="main">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-search">
+      <span class="search-icon">🔍</span>
+      <input type="text" placeholder="Search Guardian AI...">
+    </div>
+    <div class="topbar-right">
+      <div class="status-dot-live" title="System Active"></div>
+      <div class="topbar-btn" title="Notifications">🔔<div class="notif-dot"></div></div>
+      <div class="topbar-btn" title="Settings" onclick="navigate('settings',null)">⚙️</div>
+      <div class="user-pill">
+        <div class="user-avatar">A</div>
+        <span class="user-name">Admin</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ PAGE: DASHBOARD ══════ -->
+  <div class="page-content active" id="page-dashboard">
+
+    <div class="welcome-banner">
+      <div class="flex items-center justify-between" style="flex-wrap:wrap;gap:16px">
+        <div>
+          <div class="welcome-title">Welcome to Guardian AI 🛡️</div>
+          <div class="welcome-sub">Your enterprise safety & intelligence platform is active and monitoring.</div>
+          <div class="welcome-stats">
+            <div class="w-stat"><span class="w-stat-icon">🟢</span><div><div class="w-stat-val">System Active</div><div class="w-stat-label">ALL SYSTEMS GO</div></div></div>
+            <div class="w-stat"><span class="w-stat-icon">🧠</span><div><div class="w-stat-val">7 Models</div><div class="w-stat-label">ACTIVE MODELS</div></div></div>
+            <div class="w-stat"><span class="w-stat-icon">🔔</span><div><div class="w-stat-val" id="alerts-today">27</div><div class="w-stat-label">ALERTS TODAY</div></div></div>
+            <div class="w-stat"><span class="w-stat-icon">❤️</span><div><div class="w-stat-val">98.4%</div><div class="w-stat-label">SYSTEM HEALTH</div></div></div>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <span class="pill green"><span class="pill-dot"></span>All Clear</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI Command Bar -->
+    <div class="section-title">🧠 AI Command Bar <span>LIVE</span></div>
+    <div class="cmd-bar mb-24">
+      <div class="cmd-bar-row">
+        <input class="input" id="cmd-input" placeholder="Ask Guardian AI... e.g. 'Show threat summary for last 24h'" style="flex:1">
+        <button class="btn btn-primary" onclick="runCommand()" id="cmd-btn">▶ Run</button>
+      </div>
+      <div id="cmd-loading" style="display:none;margin-top:12px">
+        <div class="flex items-center gap-8"><div class="loading-dots"><span></span><span></span><span></span></div><span style="font-size:12px;color:var(--muted)">Guardian AI processing...</span></div>
+      </div>
+      <div id="cmd-response" style="display:none"></div>
+    </div>
+
+    <!-- Metrics -->
+    <div class="section-title">📊 System Metrics <span>REAL-TIME</span></div>
+    <div class="grid-4 mb-24">
+      <div class="metric-card" style="--mc-color:rgba(16,185,129,0.15)">
+        <div class="metric-label">Accuracy</div>
+        <div class="metric-value" style="color:#34d399">98.7%</div>
+        <div class="metric-trend trend-up">▲ +0.3% this week</div>
+      </div>
+      <div class="metric-card" style="--mc-color:rgba(239,68,68,0.15)">
+        <div class="metric-label">Threats Detected</div>
+        <div class="metric-value" style="color:#f87171" id="threats-count">1,204</div>
+        <div class="metric-trend trend-up">▲ +12% last hour</div>
+      </div>
+      <div class="metric-card" style="--mc-color:rgba(245,158,11,0.15)">
+        <div class="metric-label">Risk Level</div>
+        <div class="metric-value" style="color:#fbbf24">Medium</div>
+        <div class="metric-sub">Score: 4.2 / 10</div>
+      </div>
+      <div class="metric-card" style="--mc-color:rgba(59,130,246,0.15)">
+        <div class="metric-label">Events Count</div>
+        <div class="metric-value" id="events-count">8,230</div>
+        <div class="metric-trend trend-up">▲ Live updating</div>
+      </div>
+    </div>
+
+    <!-- Module Grid -->
+    <div class="section-title">🧩 Core Modules</div>
+    <div class="grid-3 mb-24">
+      <div class="module-card" style="--mc-border:rgba(239,68,68,0.3);--mc-glow:rgba(239,68,68,0.08)" onclick="navigate('moderation',null)">
+        <div class="module-icon">🛡️</div>
+        <div class="module-name">Content Moderation</div>
+        <div class="module-desc">Scan text, images, video and audio for policy violations</div>
+        <div class="module-arrow">→</div>
+      </div>
+      <div class="module-card" style="--mc-border:rgba(245,158,11,0.3);--mc-glow:rgba(245,158,11,0.08)" onclick="navigate('policy',null)">
+        <div class="module-icon">📜</div>
+        <div class="module-name">Policy Enforcement</div>
+        <div class="module-desc">Rule engine to automatically detect and action violations</div>
+        <div class="module-arrow">→</div>
+      </div>
+      <div class="module-card" style="--mc-border:rgba(59,130,246,0.3);--mc-glow:rgba(59,130,246,0.08)" onclick="navigate('analytics',null)">
+        <div class="module-icon">📊</div>
+        <div class="module-name">Research & Analytics</div>
+        <div class="module-desc">Trend analysis, risk graphs, and model performance charts</div>
+        <div class="module-arrow">→</div>
+      </div>
+      <div class="module-card" style="--mc-border:rgba(16,185,129,0.3);--mc-glow:rgba(16,185,129,0.08)" onclick="navigate('brand',null)">
+        <div class="module-icon">✨</div>
+        <div class="module-name">Brand Safety</div>
+        <div class="module-desc">Campaign scanner and compliance scoring for brand assets</div>
+        <div class="module-arrow">→</div>
+      </div>
+      <div class="module-card" style="--mc-border:rgba(168,85,247,0.3);--mc-glow:rgba(168,85,247,0.08)" onclick="navigate('threat',null)">
+        <div class="module-icon">🚨</div>
+        <div class="module-name">Threat Response</div>
+        <div class="module-desc">Active threat queue with severity classification and actions</div>
+        <div class="module-arrow">→</div>
+      </div>
+      <div class="module-card" style="--mc-border:rgba(236,72,153,0.3);--mc-glow:rgba(236,72,153,0.08)" onclick="navigate('marketing',null)">
+        <div class="module-icon">📈</div>
+        <div class="module-name">Marketing Intelligence</div>
+        <div class="module-desc">Campaign setup, optimization insights and performance tracking</div>
+        <div class="module-arrow">→</div>
+      </div>
+    </div>
+
+    <!-- Integration Suite -->
+    <div class="section-title">⚡ Integration Suite</div>
+    <div class="grid-4 mb-24">
+      <div class="module-card" style="--mc-border:rgba(245,158,11,0.3)" onclick="navigate('fraud',null)">
+        <div class="module-icon">💰</div>
+        <div class="module-name">Fraud Detection</div>
+        <div class="module-desc">Detect scams and financial fraud patterns</div>
+        <div class="module-arrow">→</div>
+      </div>
+      <div class="module-card" style="--mc-border:rgba(168,85,247,0.3)" onclick="navigate('identity',null)">
+        <div class="module-icon">🧬</div>
+        <div class="module-name">Identity Verify</div>
+        <div class="module-desc">Deepfake and identity verification engine</div>
+        <div class="module-arrow">→</div>
+      </div>
+      <div class="module-card" style="--mc-border:rgba(34,211,238,0.3)" onclick="navigate('logs',null)">
+        <div class="module-icon">📋</div>
+        <div class="module-name">AI Log Center</div>
+        <div class="module-desc">Full audit log of all bot actions and decisions</div>
+        <div class="module-arrow">→</div>
+      </div>
+      <div class="module-card" style="--mc-border:rgba(239,68,68,0.3)" onclick="navigate('safety',null)">
+        <div class="module-icon">🚫</div>
+        <div class="module-name">Content Safety AI</div>
+        <div class="module-desc">NSFW detection with risk scoring and actions</div>
+        <div class="module-arrow">→</div>
+      </div>
+    </div>
+
+    <!-- Insight + Feed -->
+    <div class="grid-2">
+      <div>
+        <div class="section-title">💡 AI Insights</div>
+        <div id="insight-panel" class="insight-panel mb-16">
+          <div class="insight-icon">⚡</div>
+          <div class="insight-text" id="insight-text">Threat activity <strong>increased by 12%</strong> in the last hour. Review Threat Response module.</div>
+        </div>
+        <div class="insight-panel" style="background:linear-gradient(135deg,rgba(168,85,247,0.06),rgba(59,130,246,0.04));border-color:rgba(168,85,247,0.15)">
+          <div class="insight-icon">🔮</div>
+          <div class="insight-text" style="color:#d8b4fe">Model accuracy is <strong>98.7%</strong> — above target threshold. System performing optimally.</div>
+        </div>
+      </div>
+      <div>
+        <div class="section-title">📡 Live Activity Feed <span>AUTO-UPDATE</span></div>
+        <div class="card" style="padding:12px">
+          <div class="scroll-area" id="activity-feed"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ PAGE: MODERATION ══════ -->
+  <div class="page-content" id="page-moderation">
+    <div class="breadcrumb">DASHBOARD / CONTENT MODERATION</div>
+    <div class="page-header">
+      <h1>🛡️ Content Moderation</h1>
+      <p>Scan and classify content for policy violations across all media types</p>
+    </div>
+    <div class="grid-2">
+      <div>
+        <div class="section-title">Input Content</div>
+        <div class="card">
+          <div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap">
+            <button class="btn btn-ghost btn-sm media-tab active" onclick="setMediaTab(this,'text')">📝 Text</button>
+            <button class="btn btn-ghost btn-sm media-tab" onclick="setMediaTab(this,'image')">🖼️ Image</button>
+            <button class="btn btn-ghost btn-sm media-tab" onclick="setMediaTab(this,'video')">🎬 Video</button>
+            <button class="btn btn-ghost btn-sm media-tab" onclick="setMediaTab(this,'audio')">🎵 Audio</button>
+          </div>
+          <textarea class="input" id="mod-input" placeholder="Paste content to scan for violations..."></textarea>
+          <button class="btn btn-primary mt-12" style="width:100%" onclick="runModeration()">🔍 Scan Content</button>
+        </div>
+      </div>
+      <div>
+        <div class="section-title">Scan Result</div>
+        <div id="mod-result">
+          <div class="card" style="text-align:center;padding:40px;color:var(--muted)">
+            <div style="font-size:32px;margin-bottom:8px">🔍</div>
+            <div style="font-size:13px">Awaiting content scan...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mt-24">
+      <div class="section-title">Recent Scans</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Content</th><th>Type</th><th>Risk Score</th><th>Decision</th><th>Time</th></tr></thead>
+          <tbody>
+            <tr><td>User comment on post #4921</td><td><span class="tag">Text</span></td><td>87%</td><td><span class="pill red"><span class="pill-dot"></span>Blocked</span></td><td style="font-family:'JetBrains Mono',monospace">2m ago</td></tr>
+            <tr><td>Profile image upload #1084</td><td><span class="tag">Image</span></td><td>12%</td><td><span class="pill green"><span class="pill-dot"></span>Allowed</span></td><td style="font-family:'JetBrains Mono',monospace">5m ago</td></tr>
+            <tr><td>Video post in group #229</td><td><span class="tag">Video</span></td><td>54%</td><td><span class="pill yellow"><span class="pill-dot"></span>Flagged</span></td><td style="font-family:'JetBrains Mono',monospace">11m ago</td></tr>
+            <tr><td>Marketing email content</td><td><span class="tag">Text</span></td><td>3%</td><td><span class="pill green"><span class="pill-dot"></span>Allowed</span></td><td style="font-family:'JetBrains Mono',monospace">18m ago</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ PAGE: POLICY ══════ -->
+  <div class="page-content" id="page-policy">
+    <div class="breadcrumb">DASHBOARD / POLICY ENFORCEMENT</div>
+    <div class="page-header">
+      <h1>📜 Policy Enforcement</h1>
+      <p>Rule engine for automated violation detection and enforcement actions</p>
+    </div>
+    <div class="grid-2">
+      <div>
+        <div class="section-title">Active Rules <span>6 ENABLED</span></div>
+        <div id="rules-list">
+          <div class="rule-item"><span style="font-size:18px">🚫</span><div style="flex:1"><div class="rule-name">Hate Speech Detection</div><div class="rule-desc">Auto-block content with hate speech patterns</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+          <div class="rule-item"><span style="font-size:18px">🔞</span><div style="flex:1"><div class="rule-name">Adult Content Filter</div><div class="rule-desc">Flag and review NSFW material automatically</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+          <div class="rule-item"><span style="font-size:18px">💣</span><div style="flex:1"><div class="rule-name">Violence Threshold</div><div class="rule-desc">Block graphic violence above 70% confidence</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+          <div class="rule-item"><span style="font-size:18px">🕵️</span><div style="flex:1"><div class="rule-name">Spam Pattern Match</div><div class="rule-desc">Detect and remove spam campaigns</div></div><div class="toggle" onclick="this.classList.toggle('on')"></div></div>
+          <div class="rule-item"><span style="font-size:18px">🔗</span><div style="flex:1"><div class="rule-name">Phishing URL Detect</div><div class="rule-desc">Scan all links for phishing signatures</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+        </div>
+      </div>
+      <div>
+        <div class="section-title">Active Violations</div>
+        <div class="card" style="padding:12px">
+          <div class="rule-item" style="background:rgba(239,68,68,0.06);border-color:rgba(239,68,68,0.2)">
+            <span>⚠️</span>
+            <div style="flex:1"><div class="rule-name">User @xyz123 — Hate Speech</div><div class="rule-desc">Triggered rule: Hate Speech Detection · 3 min ago</div></div>
+            <div style="display:flex;gap:6px">
+              <button class="btn btn-warning btn-sm" onclick="showToast('User warned','yellow')">Warn</button>
+              <button class="btn btn-danger btn-sm" onclick="showToast('User banned','red')">Ban</button>
+            </div>
+          </div>
+          <div class="rule-item" style="background:rgba(245,158,11,0.06);border-color:rgba(245,158,11,0.2)">
+            <span>⚠️</span>
+            <div style="flex:1"><div class="rule-name">Post #8821 — Spam Campaign</div><div class="rule-desc">Triggered rule: Spam Pattern Match · 7 min ago</div></div>
+            <div style="display:flex;gap:6px">
+              <button class="btn btn-warning btn-sm" onclick="showToast('Post restricted','yellow')">Restrict</button>
+              <button class="btn btn-danger btn-sm" onclick="showToast('Post removed','red')">Remove</button>
+            </div>
+          </div>
+          <div class="rule-item" style="background:rgba(239,68,68,0.06);border-color:rgba(239,68,68,0.2)">
+            <span>🔗</span>
+            <div style="flex:1"><div class="rule-name">Link in DM — Phishing URL</div><div class="rule-desc">Triggered rule: Phishing URL Detect · 14 min ago</div></div>
+            <div style="display:flex;gap:6px">
+              <button class="btn btn-danger btn-sm" onclick="showToast('URL blocked','red')">Block</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ PAGE: ANALYTICS ══════ -->
+  <div class="page-content" id="page-analytics">
+    <div class="breadcrumb">DASHBOARD / RESEARCH & ANALYTICS</div>
+    <div class="page-header">
+      <h1>📊 Research & Analytics</h1>
+      <p>Violation trends, threat type distribution, and model performance metrics</p>
+    </div>
+    <div class="grid-2 mb-24">
+      <div class="card">
+        <div class="section-title">Violations Over Time</div>
+        <div class="chart-bar-wrap" id="violations-chart"></div>
+      </div>
+      <div class="card">
+        <div class="section-title">Threat Type Distribution</div>
+        <div id="threat-pie"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="section-title">Model Performance</div>
+      <div class="chart-bar-wrap" id="model-perf"></div>
+    </div>
+  </div>
+
+  <!-- ══════ PAGE: BRAND ══════ -->
+  <div class="page-content" id="page-brand">
+    <div class="breadcrumb">DASHBOARD / BRAND SAFETY</div>
+    <div class="page-header">
+      <h1>✨ Brand Safety</h1>
+      <p>Scan campaign assets and content for brand compliance and safety risks</p>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="section-title">Campaign Scanner</div>
+        <div style="margin-bottom:12px">
+          <label style="font-size:12px;color:var(--muted2);display:block;margin-bottom:6px">Campaign Name</label>
+          <input class="input" placeholder="e.g. Summer 2025 Campaign" id="brand-name">
+        </div>
+        <div style="margin-bottom:12px">
+          <label style="font-size:12px;color:var(--muted2);display:block;margin-bottom:6px">Content / URL</label>
+          <textarea class="input" placeholder="Paste ad copy, landing page URL, or creative brief..." id="brand-input"></textarea>
+        </div>
+        <button class="btn btn-primary" style="width:100%" onclick="runBrandScan()">🔍 Scan Campaign</button>
+      </div>
+      <div>
+        <div class="section-title">Scan Result</div>
+        <div id="brand-result">
+          <div class="card" style="text-align:center;padding:40px;color:var(--muted)">
+            <div style="font-size:32px;margin-bottom:8px">✨</div>
+            <div style="font-size:13px">No scan yet — enter campaign details</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ PAGE: THREAT ══════ -->
+  <div class="page-content" id="page-threat">
+    <div class="breadcrumb">DASHBOARD / THREAT RESPONSE</div>
+    <div class="page-header">
+      <h1>🚨 Threat Response</h1>
+      <p>Active threat queue with severity classification and resolution actions</p>
+    </div>
+    <div class="grid-4 mb-24">
+      <div class="metric-card" style="--mc-color:rgba(239,68,68,0.15)"><div class="metric-label">Critical</div><div class="metric-value" style="color:#f87171">3</div></div>
+      <div class="metric-card" style="--mc-color:rgba(245,158,11,0.15)"><div class="metric-label">High</div><div class="metric-value" style="color:#fbbf24">11</div></div>
+      <div class="metric-card" style="--mc-color:rgba(59,130,246,0.15)"><div class="metric-label">Medium</div><div class="metric-value" style="color:#93c5fd">28</div></div>
+      <div class="metric-card" style="--mc-color:rgba(16,185,129,0.15)"><div class="metric-label">Resolved Today</div><div class="metric-value" style="color:#34d399">47</div></div>
+    </div>
+    <div id="threats-list">
+      <div class="threat-item" style="border-color:rgba(239,68,68,0.3);background:rgba(239,68,68,0.04)">
+        <div class="threat-header"><span style="font-size:18px">🔴</span><div class="threat-name">Coordinated Bot Attack</div><span class="pill red"><span class="pill-dot"></span>Critical</span></div>
+        <div class="threat-detail">1,200 bot accounts detected making simultaneous requests · Source: Eastern Europe · Started 14 min ago</div>
+        <div class="threat-actions"><button class="btn btn-danger btn-sm" onclick="resolveThreat(this,'Blocking all IPs...')">Block IPs</button><button class="btn btn-warning btn-sm" onclick="resolveThreat(this,'Rate limiting applied')">Rate Limit</button><button class="btn btn-ghost btn-sm" onclick="resolveThreat(this,'Flagged for review')">Flag</button></div>
+      </div>
+      <div class="threat-item" style="border-color:rgba(239,68,68,0.3);background:rgba(239,68,68,0.04)">
+        <div class="threat-header"><span style="font-size:18px">🔴</span><div class="threat-name">Data Scraping Detected</div><span class="pill red"><span class="pill-dot"></span>Critical</span></div>
+        <div class="threat-detail">Unauthorized scraping of user profiles at 800 req/min · IP: 192.168.xx.xx</div>
+        <div class="threat-actions"><button class="btn btn-danger btn-sm" onclick="resolveThreat(this,'IP blocked')">Block IP</button><button class="btn btn-ghost btn-sm" onclick="resolveThreat(this,'Escalated to security team')">Escalate</button></div>
+      </div>
+      <div class="threat-item" style="border-color:rgba(245,158,11,0.3);background:rgba(245,158,11,0.04)">
+        <div class="threat-header"><span style="font-size:18px">🟡</span><div class="threat-name">Phishing Campaign</div><span class="pill yellow"><span class="pill-dot"></span>High</span></div>
+        <div class="threat-detail">Phishing links distributed via DM to 340 users in last 30 min</div>
+        <div class="threat-actions"><button class="btn btn-danger btn-sm" onclick="resolveThreat(this,'All links blocked + users notified')">Block All</button><button class="btn btn-warning btn-sm" onclick="resolveThreat(this,'Users warned')">Warn Users</button></div>
+      </div>
+      <div class="threat-item" style="border-color:rgba(59,130,246,0.3);background:rgba(59,130,246,0.04)">
+        <div class="threat-header"><span style="font-size:18px">🔵</span><div class="threat-name">Unusual Login Pattern</div><span class="pill blue"><span class="pill-dot"></span>Medium</span></div>
+        <div class="threat-detail">47 accounts showing login from new locations simultaneously</div>
+        <div class="threat-actions"><button class="btn btn-warning btn-sm" onclick="resolveThreat(this,'MFA triggered for accounts')">Trigger MFA</button><button class="btn btn-ghost btn-sm" onclick="resolveThreat(this,'Marked as monitoring')">Monitor</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ PAGE: MARKETING ══════ -->
+  <div class="page-content" id="page-marketing">
+    <div class="breadcrumb">DASHBOARD / MARKETING INTELLIGENCE</div>
+    <div class="page-header">
+      <h1>📈 Marketing Intelligence</h1>
+      <p>Campaign setup, AI optimization, and performance tracking</p>
+    </div>
+    <div class="grid-2 mb-24">
+      <div class="card">
+        <div class="section-title">Campaign Setup</div>
+        <div style="margin-bottom:12px"><label style="font-size:12px;color:var(--muted2);display:block;margin-bottom:6px">Campaign Name</label><input class="input" placeholder="Q2 Growth Campaign"></div>
+        <div style="margin-bottom:12px"><label style="font-size:12px;color:var(--muted2);display:block;margin-bottom:6px">Target Audience</label><input class="input" placeholder="18-35, Tech professionals"></div>
+        <div style="margin-bottom:12px"><label style="font-size:12px;color:var(--muted2);display:block;margin-bottom:6px">Budget</label><input class="input" placeholder="$10,000"></div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-primary" style="flex:1" onclick="showToast('Campaign created','green')">Launch Campaign</button>
+          <button class="btn btn-ghost" onclick="showToast('AI optimizing...','blue')">🧠 Optimize</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="section-title">Performance Tracking</div>
+        <div class="chart-bar-wrap" id="marketing-chart"></div>
+        <div class="divider"></div>
+        <div class="grid-2 gap-16 mt-12">
+          <div><div style="font-size:11px;color:var(--muted2)">CTR</div><div style="font-size:20px;font-weight:800;color:#34d399">4.7%</div></div>
+          <div><div style="font-size:11px;color:var(--muted2)">Conversions</div><div style="font-size:20px;font-weight:800;color:#93c5fd">1,240</div></div>
+          <div><div style="font-size:11px;color:var(--muted2)">ROAS</div><div style="font-size:20px;font-weight:800;color:#fbbf24">3.2x</div></div>
+          <div><div style="font-size:11px;color:var(--muted2)">Impressions</div><div style="font-size:20px;font-weight:800">82K</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="insight-panel"><div class="insight-icon">💡</div><div class="insight-text">AI Recommendation: <strong>Increase budget allocation by 15%</strong> for the "Tech Professionals" segment — conversion rate is 2.3x above average.</div></div>
+  </div>
+
+  <!-- ══════ PAGE: FRAUD ══════ -->
+  <div class="page-content" id="page-fraud">
+    <div class="breadcrumb">INTEGRATION SUITE / FRAUD DETECTION</div>
+    <div class="page-header">
+      <h1>💰 Fraud & Scam Detection</h1>
+      <p>Analyze text, URLs and messages for fraud patterns and scam signatures</p>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="section-title">Input</div>
+        <div style="display:flex;gap:6px;margin-bottom:12px">
+          <button class="btn btn-ghost btn-sm f-tab active" onclick="setFTab(this)">💬 Text</button>
+          <button class="btn btn-ghost btn-sm f-tab" onclick="setFTab(this)">🔗 URL</button>
+          <button class="btn btn-ghost btn-sm f-tab" onclick="setFTab(this)">📧 Message</button>
+        </div>
+        <textarea class="input" id="fraud-input" placeholder="Paste suspicious text, URL or message to analyze for fraud..."></textarea>
+        <button class="btn btn-warning mt-12" style="width:100%" onclick="runFraud()">🔍 Analyze</button>
+      </div>
+      <div>
+        <div class="section-title">Result</div>
+        <div id="fraud-result">
+          <div class="card" style="text-align:center;padding:40px;color:var(--muted)"><div style="font-size:32px;margin-bottom:8px">💰</div><div style="font-size:13px">Awaiting analysis...</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ PAGE: IDENTITY ══════ -->
+  <div class="page-content" id="page-identity">
+    <div class="breadcrumb">INTEGRATION SUITE / IDENTITY VERIFICATION</div>
+    <div class="page-header">
+      <h1>🧬 Identity & Deepfake Detection</h1>
+      <p>Verify authenticity of images, videos and audio for deepfake manipulation</p>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="section-title">Upload File</div>
+        <div style="border:2px dashed var(--border);border-radius:10px;padding:40px;text-align:center;cursor:pointer;transition:border-color 0.2s" onmouseenter="this.style.borderColor='rgba(59,130,246,0.4)'" onmouseleave="this.style.borderColor='var(--border)'">
+          <div style="font-size:32px;margin-bottom:8px">📁</div>
+          <div style="font-size:13px;color:var(--muted2)">Drop image, video or audio file</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:4px">JPG, PNG, MP4, MP3, WAV</div>
+          <div style="display:flex;gap:8px;justify-content:center;margin-top:16px">
+            <span class="tag">Image</span><span class="tag">Video</span><span class="tag">Audio</span>
+          </div>
+        </div>
+        <button class="btn btn-primary mt-12" style="width:100%" onclick="runIdentity()">🧬 Analyze File</button>
+      </div>
+      <div>
+        <div class="section-title">Verdict</div>
+        <div id="identity-result">
+          <div class="card" style="text-align:center;padding:40px;color:var(--muted)"><div style="font-size:32px;margin-bottom:8px">🧬</div><div style="font-size:13px">Upload a file to analyze</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ PAGE: LOGS ══════ -->
+  <div class="page-content" id="page-logs">
+    <div class="breadcrumb">INTEGRATION SUITE / AI LOG CENTER</div>
+    <div class="page-header">
+      <h1>📋 AI Log Center</h1>
+      <p>Complete audit log of all AI bot actions and decisions</p>
+    </div>
+    <div class="flex items-center justify-between mb-16">
+      <div style="display:flex;gap:8px">
+        <span class="pill green"><span class="pill-dot"></span>Live</span>
+        <span id="log-count" class="pill blue"><span class="pill-dot"></span>24 entries</span>
+      </div>
+      <button class="btn btn-ghost btn-sm" onclick="showToast('Logs exported','green')">⬇ Export CSV</button>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Bot / Model</th><th>Action</th><th>Target</th><th>Confidence</th><th>Severity</th><th>Timestamp</th></tr></thead>
+        <tbody id="logs-table"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══════ PAGE: SAFETY ══════ -->
+  <div class="page-content" id="page-safety">
+    <div class="breadcrumb">INTEGRATION SUITE / CONTENT SAFETY AI</div>
+    <div class="page-header">
+      <h1>🚫 Content Safety AI</h1>
+      <p>NSFW detection with risk scoring and enforcement actions</p>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="section-title">Scan Content</div>
+        <div style="display:flex;gap:6px;margin-bottom:12px">
+          <button class="btn btn-ghost btn-sm cs-tab active" onclick="setCSTab(this)">📝 Text</button>
+          <button class="btn btn-ghost btn-sm cs-tab" onclick="setCSTab(this)">🔗 URL</button>
+          <button class="btn btn-ghost btn-sm cs-tab" onclick="setCSTab(this)">📁 Content</button>
+        </div>
+        <textarea class="input" id="safety-input" placeholder="Paste content to scan for NSFW, violence, or harmful material..."></textarea>
+        <button class="btn btn-danger mt-12" style="width:100%" onclick="runSafety()">🚫 Scan</button>
+      </div>
+      <div>
+        <div class="section-title">Detection Result</div>
+        <div id="safety-result">
+          <div class="card" style="text-align:center;padding:40px;color:var(--muted)"><div style="font-size:32px;margin-bottom:8px">🚫</div><div style="font-size:13px">Awaiting scan...</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ PAGE: SETTINGS ══════ -->
+  <div class="page-content" id="page-settings">
+    <div class="breadcrumb">DASHBOARD / SETTINGS</div>
+    <div class="page-header"><h1>⚙️ Settings & Control</h1><p>Configure your Guardian AI platform, security settings, and API access</p></div>
+    <div class="grid-2">
+      <div class="card"><div class="section-title">Profile</div>
+        <div style="margin-bottom:12px"><label style="font-size:12px;color:var(--muted2);display:block;margin-bottom:6px">Organization Name</label><input class="input" value="Acme Corp"></div>
+        <div style="margin-bottom:12px"><label style="font-size:12px;color:var(--muted2);display:block;margin-bottom:6px">Admin Email</label><input class="input" value="admin@acmecorp.com"></div>
+        <button class="btn btn-primary" onclick="showToast('Profile saved','green')">Save Changes</button>
+      </div>
+      <div class="card"><div class="section-title">Security</div>
+        <div class="rule-item"><div style="flex:1"><div class="rule-name">Two-Factor Auth</div><div class="rule-desc">Require MFA for all admin logins</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+        <div class="rule-item"><div style="flex:1"><div class="rule-name">Session Timeout</div><div class="rule-desc">Auto-logout after 30 min inactivity</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+        <div class="rule-item"><div style="flex:1"><div class="rule-name">IP Allowlist</div><div class="rule-desc">Restrict access to approved IPs</div></div><div class="toggle" onclick="this.classList.toggle('on')"></div></div>
+        <button class="btn btn-ghost mt-12" onclick="showToast('Security settings updated','green')">Update Security</button>
+      </div>
+      <div class="card"><div class="section-title">API Keys</div>
+        <div style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:8px;padding:12px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted2);margin-bottom:12px">gai_live_••••••••••••••••••••••••4f2a</div>
+        <div style="display:flex;gap:8px"><button class="btn btn-ghost btn-sm" onclick="showToast('API key copied','blue')">📋 Copy</button><button class="btn btn-danger btn-sm" onclick="showToast('Key regenerated','yellow')">🔄 Regenerate</button></div>
+      </div>
+      <div class="card"><div class="section-title">Subscription</div>
+        <div style="margin-bottom:16px"><span class="pill purple"><span class="pill-dot"></span>Enterprise Plan</span></div>
+        <div style="font-size:13px;color:var(--muted2);margin-bottom:8px">Next billing: May 1, 2026</div>
+        <div style="font-size:13px;color:var(--muted2);margin-bottom:16px">10M API calls / month · Unlimited users</div>
+        <button class="btn btn-ghost btn-sm" onclick="showToast('Opening billing portal...','blue')">Manage Billing</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+</div><!-- /app -->
+
+<!-- TOAST -->
+<div id="toast" style="position:fixed;bottom:24px;right:24px;z-index:999;display:none;animation:fadeIn 0.3s ease">
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 18px;font-size:13px;font-weight:500;display:flex;align-items:center;gap:8px;box-shadow:0 8px 32px rgba(0,0,0,0.5)" id="toast-inner"></div>
+</div>
+
+<script>
+// ═══════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════
+function navigate(page, navEl) {
+  document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const pg = document.getElementById('page-' + page);
+  if (pg) pg.classList.add('active');
+  if (navEl) navEl.classList.add('active');
+  else {
+    document.querySelectorAll('.nav-item').forEach(n => {
+      if (n.getAttribute('onclick') && n.getAttribute('onclick').includes("'" + page + "'")) n.classList.add('active');
+    });
+  }
+  // Init page-specific content
+  if (page === 'analytics') initAnalytics();
+  if (page === 'marketing') initMarketing();
+  if (page === 'logs') initLogs();
+}
+
+function toggleSidebar() {
+  const s = document.getElementById('sidebar');
+  const m = document.getElementById('main');
+  s.classList.toggle('collapsed');
+  m.classList.toggle('collapsed');
+  s.querySelector('.sidebar-toggle').textContent = s.classList.contains('collapsed') ? '▶' : '◀';
+}
+
+// ═══════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════
+function showToast(msg, color) {
+  const colors = {green:'#34d399',red:'#f87171',yellow:'#fbbf24',blue:'#93c5fd'};
+  const icons  = {green:'✅',red:'🚫',yellow:'⚠️',blue:'ℹ️'};
+  const t = document.getElementById('toast');
+  document.getElementById('toast-inner').innerHTML = `<span>${icons[color]||'ℹ️'}</span><span style="color:${colors[color]||'#e2e8f0'}">${msg}</span>`;
+  t.style.display = 'block';
+  clearTimeout(t._timeout);
+  t._timeout = setTimeout(() => { t.style.display = 'none'; }, 2800);
+}
+
+// ═══════════════════════════════════════
+// ACTIVITY FEED
+// ═══════════════════════════════════════
+const feedEvents = [
+  {icon:'🛡️',bg:'rgba(239,68,68,0.1)',event:'Hate speech blocked — post #9921',sev:'red',sevLabel:'Critical'},
+  {icon:'✅',bg:'rgba(16,185,129,0.1)',event:'Content scan passed — user @jane',sev:'green',sevLabel:'Clear'},
+  {icon:'🔍',bg:'rgba(59,130,246,0.1)',event:'Policy rule triggered — spam detected',sev:'yellow',sevLabel:'Warning'},
+  {icon:'🔒',bg:'rgba(168,85,247,0.1)',event:'Login from new IP — user @mike',sev:'blue',sevLabel:'Info'},
+  {icon:'🤖',bg:'rgba(34,211,238,0.1)',event:'Bot activity detected — 14 accounts',sev:'red',sevLabel:'High'},
+  {icon:'📊',bg:'rgba(245,158,11,0.1)',event:'Analytics report generated',sev:'green',sevLabel:'Done'},
+  {icon:'💰',bg:'rgba(245,158,11,0.1)',event:'Fraud pattern detected — payment #4421',sev:'red',sevLabel:'Critical'},
+  {icon:'🔗',bg:'rgba(239,68,68,0.1)',event:'Phishing URL blocked — 3 instances',sev:'red',sevLabel:'Critical'},
+];
+
+function renderFeed() {
+  const feed = document.getElementById('activity-feed');
+  if (!feed) return;
+  const e = feedEvents[Math.floor(Math.random() * feedEvents.length)];
+  const now = new Date().toLocaleTimeString();
+  const sevClass = {red:'red',green:'green',yellow:'yellow',blue:'blue'}[e.sev]||'blue';
+  const item = document.createElement('div');
+  item.className = 'feed-item new';
+  item.innerHTML = `
+    <div class="feed-icon" style="background:${e.bg}">${e.icon}</div>
+    <div class="feed-text">
+      <div class="feed-event">${e.event}</div>
+      <div class="feed-time">${now}</div>
+    </div>
+    <div class="feed-sev"><span class="pill ${sevClass}"><span class="pill-dot"></span>${e.sevLabel}</span></div>
+  `;
+  feed.insertBefore(item, feed.firstChild);
+  if (feed.children.length > 8) feed.removeChild(feed.lastChild);
+}
+setInterval(renderFeed, 3000);
+renderFeed(); renderFeed(); renderFeed();
+
+// Update metrics live
+setInterval(() => {
+  const tc = document.getElementById('threats-count');
+  const ec = document.getElementById('events-count');
+  const ai = document.getElementById('alerts-today');
+  if (tc) { const v = parseInt(tc.textContent.replace(',','')) + Math.floor(Math.random()*3); tc.textContent = v.toLocaleString(); }
+  if (ec) { const v = parseInt(ec.textContent.replace(',','')) + Math.floor(Math.random()*5+1); ec.textContent = v.toLocaleString(); }
+  if (ai) { const v = parseInt(ai.textContent) + (Math.random()>0.7?1:0); ai.textContent = v; }
+}, 4000);
+
+// Rotate insights
+const insights = [
+  'Threat activity <strong>increased by 12%</strong> in the last hour. Review Threat Response module.',
+  'Content moderation blocked <strong>24 violations</strong> in the past 30 minutes.',
+  '<strong>3 critical threats</strong> require immediate action in the Threat Response queue.',
+  'AI model accuracy at <strong>98.7%</strong> — above target threshold.',
+  'Fraud detection caught <strong>2 new scam patterns</strong> this morning.',
+];
+let insightIdx = 0;
+setInterval(() => {
+  insightIdx = (insightIdx+1) % insights.length;
+  const el = document.getElementById('insight-text');
+  if (el) el.innerHTML = insights[insightIdx];
+}, 7000);
+
+// ═══════════════════════════════════════
+// AI COMMAND BAR
+// ═══════════════════════════════════════
+const cmdResponses = [
+  {status:'⚠️ Threat Detected',statusClass:'red',confidence:'94%',reason:'Suspicious behavior pattern matching known bot signatures'},
+  {status:'✅ System Healthy',statusClass:'green',confidence:'99%',reason:'All modules operating within normal parameters'},
+  {status:'📊 Report Generated',statusClass:'blue',confidence:'98%',reason:'Last 24h: 1,204 threats detected, 47 resolved, 3 pending'},
+  {status:'🔍 Anomaly Found',statusClass:'yellow',confidence:'81%',reason:'Unusual traffic spike detected on Content Moderation module'},
+  {status:'🚫 Policy Violation',statusClass:'red',confidence:'97%',reason:'Multiple hate speech patterns detected in recent posts'},
+];
+
+function runCommand() {
+  const q = document.getElementById('cmd-input').value.trim();
+  if (!q) { showToast('Enter a query first','yellow'); return; }
+  const btn = document.getElementById('cmd-btn');
+  btn.disabled = true;
+  document.getElementById('cmd-loading').style.display = 'block';
+  document.getElementById('cmd-response').style.display = 'none';
+  setTimeout(() => {
+    const r = cmdResponses[Math.floor(Math.random()*cmdResponses.length)];
+    document.getElementById('cmd-loading').style.display = 'none';
+    const res = document.getElementById('cmd-response');
+    res.style.display = 'block';
+    res.innerHTML = `
+      <div class="cmd-response">
+        <div style="font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--muted);margin-bottom:8px">GUARDIAN AI RESPONSE</div>
+        <div class="cmd-response-grid">
+          <div class="cmd-r-item"><div class="cmd-r-label">Status</div><div class="cmd-r-value"><span class="pill ${r.statusClass}"><span class="pill-dot"></span>${r.status}</span></div></div>
+          <div class="cmd-r-item"><div class="cmd-r-label">Confidence</div><div class="cmd-r-value" style="color:var(--accent)">${r.confidence}</div></div>
+          <div class="cmd-r-item"><div class="cmd-r-label">Reason</div><div class="cmd-r-value" style="font-size:11px;color:var(--muted2)">${r.reason}</div></div>
+        </div>
+      </div>`;
+    btn.disabled = false;
+  }, 1600);
+}
+document.getElementById('cmd-input').addEventListener('keydown', e => { if (e.key==='Enter') runCommand(); });
+
+// ═══════════════════════════════════════
+// MODERATION
+// ═══════════════════════════════════════
+function setMediaTab(el, type) {
+  document.querySelectorAll('.media-tab').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function runModeration() {
+  const input = document.getElementById('mod-input').value.trim();
+  if (!input) { showToast('Enter content to scan','yellow'); return; }
+  const results = [
+    {cls:'danger',icon:'🚫',title:'High Risk — Blocked',score:87,color:'#ef4444',decision:'Block',decClass:'red',items:['Hate speech patterns detected','Violates Community Guidelines §4.2','Automated block applied']},
+    {cls:'warning',icon:'⚠️',title:'Medium Risk — Flagged',score:52,color:'#f59e0b',decision:'Flag for Review',decClass:'yellow',items:['Potentially sensitive content','Context review recommended','Pending human moderation']},
+    {cls:'safe',icon:'✅',title:'Low Risk — Allowed',score:8,color:'#10b981',decision:'Allow',decClass:'green',items:['No policy violations found','Content within guidelines','Approved automatically']},
+  ];
+  const r = results[Math.floor(Math.random()*results.length)];
+  document.getElementById('mod-result').innerHTML = `
+    <div class="scan-result ${r.cls}">
+      <div class="flex items-center gap-8 mb-16"><span style="font-size:22px">${r.icon}</span><h3>${r.title}</h3></div>
+      <div style="font-size:12px;color:var(--muted2);margin-bottom:6px">Risk Score</div>
+      <div class="scan-meter"><div class="scan-meter-fill" style="width:${r.score}%;background:${r.color}"></div></div>
+      <div style="font-size:13px;font-weight:700;color:${r.color};margin-bottom:12px">${r.score}%</div>
+      <div style="margin-bottom:12px">${r.items.map(i=>`<div style="font-size:12px;color:var(--muted2);margin-bottom:4px">• ${i}</div>`).join('')}</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <span class="pill ${r.decClass}"><span class="pill-dot"></span>Decision: ${r.decision}</span>
+        <button class="btn btn-ghost btn-sm" onclick="showToast('Decision overridden','yellow')">Override</button>
+      </div>
+    </div>`;
+  showToast('Scan complete','blue');
+}
+
+// ═══════════════════════════════════════
+// BRAND SAFETY
+// ═══════════════════════════════════════
+function runBrandScan() {
+  const input = document.getElementById('brand-input').value.trim();
+  if (!input) { showToast('Enter campaign content first','yellow'); return; }
+  const results = [
+    {cls:'safe',icon:'✅',title:'Brand Safe',score:95,color:'#10b981',verdict:'Safe to publish',items:['No brand-risk keywords','Compliant with ad policies','Safe for all platforms']},
+    {cls:'warning',icon:'⚠️',title:'Review Required',score:61,color:'#f59e0b',verdict:'Manual Review',items:['Potentially controversial topic','Platform-specific restrictions may apply','Legal review recommended']},
+    {cls:'danger',icon:'🚫',title:'Brand Risk Detected',score:22,color:'#ef4444',verdict:'Block Campaign',items:['Associated with harmful content','Brand safety threshold exceeded','Recommend content revision']},
+  ];
+  const r = results[Math.floor(Math.random()*results.length)];
+  document.getElementById('brand-result').innerHTML = `
+    <div class="scan-result ${r.cls}">
+      <div class="flex items-center gap-8 mb-16"><span style="font-size:22px">${r.icon}</span><h3>${r.title}</h3></div>
+      <div style="font-size:12px;color:var(--muted2);margin-bottom:6px">Safety Score</div>
+      <div class="scan-meter"><div class="scan-meter-fill" style="width:${r.score}%;background:${r.color}"></div></div>
+      <div style="font-size:13px;font-weight:700;color:${r.color};margin-bottom:12px">${r.score}/100</div>
+      <div style="margin-bottom:12px">${r.items.map(i=>`<div style="font-size:12px;color:var(--muted2);margin-bottom:4px">• ${i}</div>`).join('')}</div>
+      <div style="display:flex;gap:8px"><span class="pill ${r.cls==='safe'?'green':r.cls==='warning'?'yellow':'red'}"><span class="pill-dot"></span>${r.verdict}</span></div>
+    </div>`;
+}
+
+// ═══════════════════════════════════════
+// FRAUD DETECTION
+// ═══════════════════════════════════════
+function setFTab(el) { document.querySelectorAll('.f-tab').forEach(b=>b.classList.remove('active')); el.classList.add('active'); }
+function runFraud() {
+  const input = document.getElementById('fraud-input').value.trim();
+  if (!input) { showToast('Enter content to analyze','yellow'); return; }
+  const results = [
+    {cls:'danger',icon:'🚨',fraudType:'Phishing Scam',risk:'Critical',color:'#ef4444',confidence:96,explanation:'Contains known phishing patterns, urgency manipulation language, and spoofed domain characteristics'},
+    {cls:'danger',icon:'💸',fraudType:'Financial Fraud',risk:'High',color:'#ef4444',confidence:89,explanation:'Matches patterns of advance-fee fraud (419 scam). Promises unrealistic returns to extract payment.'},
+    {cls:'warning',icon:'⚠️',fraudType:'Suspicious Activity',risk:'Medium',color:'#f59e0b',confidence:67,explanation:'Contains some suspicious patterns but insufficient to confirm fraud. Manual review recommended.'},
+    {cls:'safe',icon:'✅',fraudType:'No Fraud Detected',risk:'Low',color:'#10b981',confidence:97,explanation:'Content matches normal communication patterns. No fraud signatures found in analysis.'},
+  ];
+  const r = results[Math.floor(Math.random()*results.length)];
+  document.getElementById('fraud-result').innerHTML = `
+    <div class="scan-result ${r.cls}">
+      <div class="flex items-center gap-8 mb-16"><span style="font-size:22px">${r.icon}</span><h3>${r.fraudType}</h3></div>
+      <div class="cmd-response-grid" style="margin-bottom:12px">
+        <div class="cmd-r-item"><div class="cmd-r-label">Risk Level</div><div class="cmd-r-value" style="color:${r.color}">${r.risk}</div></div>
+        <div class="cmd-r-item"><div class="cmd-r-label">Confidence</div><div class="cmd-r-value" style="color:var(--accent)">${r.confidence}%</div></div>
+      </div>
+      <div style="font-size:12px;color:var(--muted2);line-height:1.6">${r.explanation}</div>
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <button class="btn btn-danger btn-sm" onclick="showToast('Reported to fraud team','red')">🚨 Report</button>
+        <button class="btn btn-ghost btn-sm" onclick="showToast('Marked as false positive','yellow')">False Positive</button>
+      </div>
+    </div>`;
+}
+
+// ═══════════════════════════════════════
+// IDENTITY / DEEPFAKE
+// ═══════════════════════════════════════
+function runIdentity() {
+  const verdicts = [
+    {cls:'safe',icon:'✅',verdict:'Authentic',color:'#10b981',confidence:98,detail:'No manipulation artifacts detected. Biometric markers are consistent and unaltered.'},
+    {cls:'danger',icon:'🤖',verdict:'Deepfake Detected',color:'#ef4444',confidence:94,detail:'GAN-generated content detected. Face swap artifacts found in frame analysis. Do not trust.'},
+    {cls:'warning',icon:'🔍',verdict:'Suspicious — Review',color:'#f59e0b',confidence:71,detail:'Possible manipulation in metadata. Some inconsistencies in compression artifacts. Requires expert review.'},
+  ];
+  const r = verdicts[Math.floor(Math.random()*verdicts.length)];
+  document.getElementById('identity-result').innerHTML = `
+    <div class="scan-result ${r.cls}">
+      <div class="flex items-center gap-8 mb-16"><span style="font-size:28px">${r.icon}</span><div><h3 style="color:${r.color}">${r.verdict}</h3><div style="font-size:11px;color:var(--muted2)">Deepfake / Identity Analysis</div></div></div>
+      <div style="font-size:12px;color:var(--muted2);margin-bottom:4px">Confidence Score</div>
+      <div class="scan-meter"><div class="scan-meter-fill" style="width:${r.confidence}%;background:${r.color}"></div></div>
+      <div style="font-size:20px;font-weight:800;color:${r.color};margin-bottom:12px">${r.confidence}%</div>
+      <div style="font-size:12px;color:var(--muted2);line-height:1.6;margin-bottom:12px">${r.detail}</div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-ghost btn-sm" onclick="showToast('Saved to evidence log','blue')">💾 Save</button>
+        <button class="btn btn-danger btn-sm" onclick="showToast('Flagged for review','red')">🚩 Flag</button>
+      </div>
+    </div>`;
+  showToast('Analysis complete','blue');
+}
+
+// ═══════════════════════════════════════
+// CONTENT SAFETY
+// ═══════════════════════════════════════
+function setCSTab(el) { document.querySelectorAll('.cs-tab').forEach(b=>b.classList.remove('active')); el.classList.add('active'); }
+function runSafety() {
+  const input = document.getElementById('safety-input').value.trim();
+  if (!input) { showToast('Enter content to scan','yellow'); return; }
+  const levels = [
+    {cls:'danger',level:'High Risk',color:'#ef4444',nsfw:'NSFW: Explicit',score:91,categories:['Explicit content','Adult material','Age-restricted'],actions:true},
+    {cls:'warning',level:'Medium Risk',color:'#f59e0b',nsfw:'Potentially Sensitive',score:54,categories:['Suggestive content','Context-dependent','Platform review required'],actions:true},
+    {cls:'safe',level:'Low Risk',color:'#10b981',nsfw:'Safe Content',score:6,categories:['No harmful content','Safe for all audiences','Compliant'],actions:false},
+  ];
+  const r = levels[Math.floor(Math.random()*levels.length)];
+  document.getElementById('safety-result').innerHTML = `
+    <div class="scan-result ${r.cls}">
+      <div class="flex items-center justify-between mb-16">
+        <h3>${r.nsfw}</h3>
+        <span class="pill ${r.cls==='safe'?'green':r.cls==='warning'?'yellow':'red'}"><span class="pill-dot"></span>${r.level}</span>
+      </div>
+      <div style="font-size:12px;color:var(--muted2);margin-bottom:6px">Risk Score</div>
+      <div class="scan-meter"><div class="scan-meter-fill" style="width:${r.score}%;background:${r.color}"></div></div>
+      <div style="font-size:18px;font-weight:800;color:${r.color};margin-bottom:12px">${r.score}%</div>
+      <div style="margin-bottom:14px">${r.categories.map(c=>`<div style="font-size:12px;color:var(--muted2);margin-bottom:4px">• ${c}</div>`).join('')}</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-success btn-sm" onclick="showToast('Content approved','green')">✅ Approve</button>
+        <button class="btn btn-warning btn-sm" onclick="showToast('Sent for manual review','yellow')">👁 Review</button>
+        <button class="btn btn-danger btn-sm" onclick="showToast('Content blocked','red')">🚫 Block</button>
+      </div>
+    </div>`;
+}
+
+// ═══════════════════════════════════════
+// THREAT ACTIONS
+// ═══════════════════════════════════════
+function resolveThreat(btn, msg) {
+  const item = btn.closest('.threat-item');
+  if (item) {
+    item.style.opacity = '0';
+    item.style.transform = 'translateX(20px)';
+    item.style.transition = 'all 0.3s';
+    setTimeout(() => item.remove(), 300);
+  }
+  showToast(msg, 'green');
+}
+
+// ═══════════════════════════════════════
+// ANALYTICS
+// ═══════════════════════════════════════
+function initAnalytics() {
+  // Violations bar chart
+  const vc = document.getElementById('violations-chart');
+  if (vc && !vc.dataset.init) {
+    vc.dataset.init = '1';
+    const data = [
+      {label:'Mon',val:72,pct:72},
+      {label:'Tue',val:88,pct:88},
+      {label:'Wed',val:65,pct:65},
+      {label:'Thu',val:94,pct:94},
+      {label:'Fri',val:110,pct:100},
+      {label:'Sat',val:43,pct:43},
+      {label:'Sun',val:57,pct:57},
+    ];
+    vc.innerHTML = data.map(d=>`
+      <div class="chart-bar-row">
+        <div class="chart-bar-label">${d.label}</div>
+        <div class="chart-bar-track"><div class="chart-bar-fill" style="width:0%;background:linear-gradient(90deg,var(--primary),var(--accent))" data-pct="${d.pct}"></div></div>
+        <div class="chart-bar-val">${d.val}</div>
+      </div>`).join('');
+    setTimeout(()=>{ vc.querySelectorAll('.chart-bar-fill').forEach(b=>b.style.width=b.dataset.pct+'%'); }, 100);
+  }
+
+  // Threat pie (as bar)
+  const tp = document.getElementById('threat-pie');
+  if (tp && !tp.dataset.init) {
+    tp.dataset.init = '1';
+    const types = [
+      {label:'Hate Speech',pct:34,color:'#ef4444'},
+      {label:'Spam/Scam',pct:28,color:'#f59e0b'},
+      {label:'NSFW',pct:18,color:'#a855f7'},
+      {label:'Bot Activity',pct:12,color:'#3b82f6'},
+      {label:'Other',pct:8,color:'#64748b'},
+    ];
+    tp.className = 'chart-bar-wrap';
+    tp.innerHTML = types.map(d=>`
+      <div class="chart-bar-row">
+        <div class="chart-bar-label">${d.label}</div>
+        <div class="chart-bar-track"><div class="chart-bar-fill" style="width:0%;background:${d.color}" data-pct="${d.pct}"></div></div>
+        <div class="chart-bar-val">${d.pct}%</div>
+      </div>`).join('');
+    setTimeout(()=>{ tp.querySelectorAll('.chart-bar-fill').forEach(b=>b.style.width=b.dataset.pct+'%'); }, 100);
+  }
+
+  // Model performance
+  const mp = document.getElementById('model-perf');
+  if (mp && !mp.dataset.init) {
+    mp.dataset.init = '1';
+    const models = [
+      {label:'Content AI',pct:98,color:'#10b981'},
+      {label:'Fraud Bot',pct:94,color:'#f59e0b'},
+      {label:'Deepfake AI',pct:91,color:'#a855f7'},
+      {label:'Brand AI',pct:96,color:'#22d3ee'},
+      {label:'Threat AI',pct:97,color:'#ef4444'},
+    ];
+    mp.innerHTML = models.map(d=>`
+      <div class="chart-bar-row">
+        <div class="chart-bar-label">${d.label}</div>
+        <div class="chart-bar-track"><div class="chart-bar-fill" style="width:0%;background:${d.color}" data-pct="${d.pct}"></div></div>
+        <div class="chart-bar-val">${d.pct}%</div>
+      </div>`).join('');
+    setTimeout(()=>{ mp.querySelectorAll('.chart-bar-fill').forEach(b=>b.style.width=b.dataset.pct+'%'); }, 100);
+  }
+}
+
+// ═══════════════════════════════════════
+// MARKETING CHART
+// ═══════════════════════════════════════
+function initMarketing() {
+  const mc = document.getElementById('marketing-chart');
+  if (mc && !mc.dataset.init) {
+    mc.dataset.init = '1';
+    const data = [{label:'Week 1',pct:40},{label:'Week 2',pct:58},{label:'Week 3',pct:75},{label:'Week 4',pct:92}];
+    mc.innerHTML = data.map(d=>`
+      <div class="chart-bar-row">
+        <div class="chart-bar-label">${d.label}</div>
+        <div class="chart-bar-track"><div class="chart-bar-fill" style="width:0%;background:linear-gradient(90deg,var(--pink),var(--purple))" data-pct="${d.pct}"></div></div>
+        <div class="chart-bar-val">${d.pct}%</div>
+      </div>`).join('');
+    setTimeout(()=>{ mc.querySelectorAll('.chart-bar-fill').forEach(b=>b.style.width=b.dataset.pct+'%'); }, 100);
+  }
+}
+
+// ═══════════════════════════════════════
+// LOGS
+// ═══════════════════════════════════════
+const logEntries = [
+  ['ContentAI','Block post','Post #9921','97%','Critical'],
+  ['FraudBot','Flag transaction','TXN #4421','89%','High'],
+  ['DeepfakeAI','Analyze image','Upload #1084','94%','Medium'],
+  ['BrandAI','Approve campaign','CMP #201','98%','Low'],
+  ['ThreatAI','Block IP','192.168.x.x','99%','Critical'],
+  ['SpamBot','Remove post','Post #7731','85%','High'],
+  ['ContentAI','Allow content','Post #8812','96%','Low'],
+  ['PolicyBot','Warn user','@user_xyz','78%','Medium'],
+  ['FraudBot','Block URL','phish.com','99%','Critical'],
+  ['IdentityAI','Verify account','User #1029','92%','Low'],
+];
+const sevClass = {Critical:'red',High:'yellow',Medium:'blue',Low:'green'};
+
+function initLogs() {
+  const tbody = document.getElementById('logs-table');
+  if (!tbody || tbody.dataset.init) return;
+  tbody.dataset.init = '1';
+  renderLogs();
+  setInterval(renderLogs, 4000);
+}
+
+function renderLogs() {
+  const tbody = document.getElementById('logs-table');
+  if (!tbody) return;
+  const e = logEntries[Math.floor(Math.random()*logEntries.length)];
+  const now = new Date().toLocaleTimeString();
+  const row = document.createElement('tr');
+  row.innerHTML = `
+    <td><strong style="color:var(--text)">${e[0]}</strong></td>
+    <td>${e[1]}</td>
+    <td style="font-family:'JetBrains Mono',monospace;font-size:11px">${e[2]}</td>
+    <td style="color:var(--accent);font-family:'JetBrains Mono',monospace">${e[3]}</td>
+    <td><span class="pill ${sevClass[e[4]]||'blue'}"><span class="pill-dot"></span>${e[4]}</span></td>
+    <td style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)">${now}</td>`;
+  tbody.insertBefore(row, tbody.firstChild);
+  if (tbody.children.length > 20) tbody.removeChild(tbody.lastChild);
+  const cnt = document.getElementById('log-count');
+  if (cnt) cnt.innerHTML = `<span class="pill-dot"></span>${tbody.children.length} entries`;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guardian AI — Marketing Command Center</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* View Toggling */
+        .page-view { display: none; }
+        .page-view.active { display: block; }
+        
+        /* Studio Specifics */
+        .studio-grid { display: grid; grid-template-columns: 320px 1fr; gap: 32px; }
+        .studio-sidebar { position: sticky; top: 112px; }
+        .mode-tab { padding: 10px 16px; cursor: pointer; font-weight: 600; font-size: 14px; border-radius: var(--radius-md); transition: all 0.2s; }
+        .mode-tab.active { background: var(--color-primary); color: white; }
+        
+        .creative-card { background: white; border-radius: var(--radius-lg); border: 1px solid var(--color-border-light); overflow: hidden; transition: transform 0.2s; }
+        .creative-card:hover { transform: translateY(-4px); }
+        .creative-preview { aspect-ratio: 1/1; background: #f1f5f9; display: flex; align-items: center; justify-content: center; position: relative; }
+        .preview-label { position: absolute; top: 12px; left: 12px; padding: 4px 8px; background: rgba(15, 23, 42, 0.8); color: white; border-radius: 4px; font-size: 10px; font-weight: 700; text-transform: uppercase; }
+        .creative-body { padding: 16px; }
+        
+        /* Floating AI Assistant */
+        .ai-assistant-btn {
+            position: fixed; bottom: 32px; right: 32px; width: 64px; height: 64px;
+            background: var(--color-primary); color: white; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-size: 28px;
+            cursor: pointer; box-shadow: 0 10px 25px rgba(11, 31, 58, 0.3); z-index: 1000;
+            transition: transform 0.2s;
+        }
+        .ai-assistant-btn:hover { transform: scale(1.05); }
+        .ai-panel {
+            position: fixed; bottom: 104px; right: 32px; width: 360px; height: 480px;
+            background: white; border-radius: var(--radius-xl); box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            display: none; flex-direction: column; z-index: 999; overflow: hidden;
+            border: 1px solid var(--color-border-light); animation: slideUp 0.3s ease;
+        }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Navbar -->
+        <nav class="navbar">
+            <div class="logo-container">
+                <div class="logo-icon">🛡️</div>
+                <div>
+                    <span class="logo-text">Guardian AI</span>
+                    <span class="logo-tagline">Marketing Command Center</span>
+                </div>
+            </div>
+            <div class="nav-links">
+                <a class="nav-link active" onclick="showPage('dashboard', this)">Dashboard</a>
+                <a class="nav-link" onclick="showPage('studio', this)">Content Studio</a>
+                <a class="nav-link" onclick="toggleAI()">AI Assistant</a>
+            </div>
+            <div class="nav-actions">
+                <button class="btn btn-outline btn-sm">Generate Creative</button>
+                <button class="btn btn-accent btn-sm">Launch Ads 🔔</button>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <div class="container">
+                
+                <!-- VIEW 1: DASHBOARD -->
+                <div id="page-dashboard" class="page-view active">
+                    <header class="page-header animate-in">
+                        <h1>AI Marketing Intelligence Dashboard</h1>
+                        <p>Automate your marketing campaigns with AI-powered insights and optimization.</p>
+                    </header>
+
+                    <div class="dashboard-grid">
+                        <section class="col-8">
+                            <div class="card animate-in" style="animation-delay: 0.1s;">
+                                <div class="card-header">
+                                    <h3 class="card-title"><span class="card-icon">📝</span>Campaign Input Panel</h3>
+                                    <button class="btn btn-sm btn-outline">Collapse</button>
+                                </div>
+                                <form class="form-grid">
+                                    <div class="form-group"><label>Product / Service</label><input type="text" class="input-field" placeholder="e.g., AI Marketing Platform"></div>
+                                    <div class="form-group">
+                                        <label>Industry</label>
+                                        <select class="input-field"><option>Select industry</option><option>Technology</option><option>Healthcare</option><option>Finance</option></select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Campaign Goal</label>
+                                        <div style="display: flex; gap: 8px;">
+                                            <button type="button" class="btn btn-outline btn-sm" style="flex: 1; border-color: var(--color-accent); color: var(--color-accent);">Sales</button>
+                                            <button type="button" class="btn btn-outline btn-sm" style="flex: 1;">Leads</button>
+                                            <button type="button" class="btn btn-outline btn-sm" style="flex: 1;">Traffic</button>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Target Platforms</label>
+                                        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                                            <span class="btn btn-outline btn-sm" style="border-radius: 20px; border-color: var(--color-primary);">Google</span>
+                                            <span class="btn btn-outline btn-sm" style="border-radius: 20px;">Meta</span>
+                                            <span class="btn btn-outline btn-sm" style="border-radius: 20px;">Instagram</span>
+                                            <span class="btn btn-outline btn-sm" style="border-radius: 20px;">LinkedIn</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group"><label>Website URL</label><input type="text" class="input-field" placeholder="https://yourwebsite.com"></div>
+                                    <div class="form-group"><label>Monthly Budget</label><input type="text" class="input-field" placeholder="$5,000"></div>
+                                    <div class="form-group col-12" style="grid-column: span 2;"><button type="button" class="btn btn-primary" style="width: 100%;">Run Market Intelligence</button></div>
+                                </form>
+                            </div>
+                        </section>
+
+                        <section class="col-4">
+                            <div class="card animate-in" style="animation-delay: 0.2s;">
+                                <div class="card-header"><h3 class="card-title"><span class="card-icon">🛡️</span>Brand Safety</h3></div>
+                                <div class="safety-item"><div class="safety-status status-approved">✅</div><div class="safety-content"><div class="safety-title">Transform Your Marketing...</div><div class="safety-meta"><span>😊 92% Sentiment</span><span style="color: var(--color-success);">Low Risk</span></div></div></div>
+                                <div class="safety-item"><div class="safety-status status-pending">⏳</div><div class="safety-content"><div class="safety-title">Stop Guessing. Start...</div><div class="safety-meta"><span>😐 88% Sentiment</span><span style="color: var(--color-warning);">Review</span></div></div></div>
+                                <div class="safety-item"><div class="safety-status status-violation">❌</div><div class="safety-content"><div class="safety-title">Get Rich Quick with...</div><div class="safety-meta"><span>😡 45% Sentiment</span><span style="color: var(--color-danger);">High Risk</span></div></div></div>
+                            </div>
+                        </section>
+
+                        <section class="col-12">
+                            <div class="card animate-in" style="animation-delay: 0.3s;">
+                                <div class="card-header"><h3 class="card-title"><span class="card-icon">📊</span>Live Performance Intelligence</h3></div>
+                                <div class="chart-container"><div class="chart-bar" style="height: 60%;"></div><div class="chart-bar" style="height: 80%;"></div><div class="chart-bar" style="height: 45%;"></div><div class="chart-bar" style="height: 90%;"></div><div class="chart-bar" style="height: 70%;"></div><div class="chart-bar" style="height: 85%;"></div><div class="chart-bar" style="height: 95%;"></div></div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
+                <!-- VIEW 2: CONTENT STUDIO -->
+                <div id="page-studio" class="page-view">
+                    <header class="page-header">
+                        <h1>Guardian AI Creative Studio</h1>
+                        <p>Generate, optimize, and preview high-performance marketing creatives.</p>
+                    </header>
+
+                    <div class="studio-grid">
+                        <!-- Studio Sidebar: Controls -->
+                        <aside class="studio-sidebar">
+                            <div class="card" style="padding: 16px;">
+                                <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px;">
+                                    <div class="mode-tab active">🖼️ Image Generation</div>
+                                    <div class="mode-tab">🎬 Video Generation</div>
+                                    <div class="mode-tab">✍️ Caption Generation</div>
+                                </div>
+                                <div class="form-group" style="margin-bottom: 20px;">
+                                    <label>Creative Prompt</label>
+                                    <textarea class="input-field" style="height: 120px; resize: none;" placeholder="Describe the image you want to generate..."></textarea>
+                                </div>
+                                <div class="form-group" style="margin-bottom: 20px;">
+                                    <label>Style Selection</label>
+                                    <select class="input-field">
+                                        <option>Modern</option><option>Minimal</option><option>Bold</option><option>Corporate</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" style="margin-bottom: 20px;">
+                                    <label>Aspect Ratio</label>
+                                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                                        <button class="btn btn-outline btn-sm">1:1</button>
+                                        <button class="btn btn-outline btn-sm">16:9</button>
+                                        <button class="btn btn-outline btn-sm">9:16</button>
+                                        <button class="btn btn-outline btn-sm">4:5</button>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary" style="width: 100%;">✨ Generate Creative</button>
+                            </div>
+                        </aside>
+
+                        <!-- Studio Main: Generated Output -->
+                        <div class="studio-output">
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+                                <h3 style="font-size: 18px;">Generated Output</h3>
+                                <div style="display: flex; gap: 12px;">
+                                    <button class="btn btn-outline btn-sm">Filter: All</button>
+                                    <button class="btn btn-outline btn-sm">Sort: Performance</button>
+                                </div>
+                            </div>
+
+                            <div class="dashboard-grid">
+                                <!-- Sample Creative 1 -->
+                                <div class="col-4">
+                                    <div class="creative-card">
+                                        <div class="creative-preview">
+                                            <span class="preview-label">Image</span>
+                                            <span style="font-size: 40px;">🎨</span>
+                                        </div>
+                                        <div class="creative-body">
+                                            <div class="safety-title">Future Tech Landing</div>
+                                            <div style="display: flex; justify-content: space-between; margin-top: 12px;">
+                                                <div style="text-align: center;">
+                                                    <div style="font-size: 10px; color: var(--color-text-secondary);">Quality</div>
+                                                    <div style="font-size: 14px; font-weight: 700; color: var(--color-success);">98%</div>
+                                                </div>
+                                                <div style="text-align: center;">
+                                                    <div style="font-size: 10px; color: var(--color-text-secondary);">Pred. CTR</div>
+                                                    <div style="font-size: 14px; font-weight: 700; color: var(--color-accent);">4.2%</div>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-outline btn-sm" style="width: 100%; margin-top: 16px;">Export</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Sample Creative 2 -->
+                                <div class="col-4">
+                                    <div class="creative-card">
+                                        <div class="creative-preview">
+                                            <span class="preview-label">Video</span>
+                                            <span style="font-size: 40px;">🎬</span>
+                                        </div>
+                                        <div class="creative-body">
+                                            <div class="safety-title">App Showcase Reel</div>
+                                            <div style="display: flex; justify-content: space-between; margin-top: 12px;">
+                                                <div style="text-align: center;">
+                                                    <div style="font-size: 10px; color: var(--color-text-secondary);">Quality</div>
+                                                    <div style="font-size: 14px; font-weight: 700; color: var(--color-success);">94%</div>
+                                                </div>
+                                                <div style="text-align: center;">
+                                                    <div style="font-size: 10px; color: var(--color-text-secondary);">Pred. CTR</div>
+                                                    <div style="font-size: 14px; font-weight: 700; color: var(--color-accent);">3.8%</div>
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-outline btn-sm" style="width: 100%; margin-top: 16px;">Export</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Performance Intelligence -->
+                            <div class="card" style="margin-top: 32px;">
+                                <div class="card-header"><h3 class="card-title">🚀 AI Performance Intelligence</h3></div>
+                                <div class="stats-strip">
+                                    <div class="stat-item"><span class="stat-label">Visual Appeal</span><span class="stat-value">High</span></div>
+                                    <div class="stat-item"><span class="stat-label">Copy Strength</span><span class="stat-value">92/100</span></div>
+                                    <div class="stat-item"><span class="stat-label">Platform Suitability</span><span class="stat-value">Optimized</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+        <!-- AI Assistant Floating UI -->
+        <div class="ai-assistant-btn" onclick="toggleAI()">🤖</div>
+        <div id="ai-panel" class="ai-panel">
+            <div style="padding: 20px; background: var(--color-primary); color: white; display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-weight: 700;">Guardian AI Copilot</span>
+                <span style="cursor: pointer;" onclick="toggleAI()">✕</span>
+            </div>
+            <div style="flex: 1; padding: 20px; overflow-y: auto; background: var(--color-bg-section);">
+                <div style="background: white; padding: 12px; border-radius: 12px; margin-bottom: 12px; font-size: 13px; border: 1px solid var(--color-border-light);">
+                    Hello! I'm your AI Marketing Assistant. How can I help you optimize your campaigns today?
+                </div>
+            </div>
+            <div style="padding: 16px; border-top: 1px solid var(--color-border-light); display: flex; gap: 8px;">
+                <input type="text" class="input-field" placeholder="Ask anything..." style="flex: 1;">
+                <button class="btn btn-primary btn-sm">Send</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="integration.js"></script>
+    <script>
+        function showPage(pageId, element) {
+            // Hide all views
+            document.querySelectorAll('.page-view').forEach(view => view.classList.remove('active'));
+            // Show selected view
+            document.getElementById('page-' + pageId).classList.add('active');
+            
+            // Update nav active state
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            if (element) element.classList.add('active');
+
+            // Trigger chart animation if dashboard
+            if (pageId === 'dashboard') animateCharts();
+        }
+
+        function toggleAI() {
+            const panel = document.getElementById('ai-panel');
+            panel.style.display = (panel.style.display === 'flex') ? 'none' : 'flex';
+        }
+
+        function animateCharts() {
+            const bars = document.querySelectorAll('.chart-bar');
+            bars.forEach((bar, index) => {
+                const finalHeight = bar.style.height;
+                bar.style.height = '0';
+                setTimeout(() => {
+                    bar.style.height = finalHeight;
+                }, 400 + (index * 100));
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', animateCharts);
+    </script>
+</body>
+</html>

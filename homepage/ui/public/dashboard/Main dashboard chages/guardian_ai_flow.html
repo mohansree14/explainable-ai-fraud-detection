@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guardian AI — Complete Flow Chart</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #08090d;
+    --surface: #0f1117;
+    --border: #1e2130;
+    --accent: #00e5ff;
+    --accent2: #7b61ff;
+    --accent3: #ff4f7b;
+    --accent4: #00ff9d;
+    --text: #e8eaf0;
+    --muted: #5a5f7a;
+    --node-bg: #131622;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    padding: 40px 20px 80px;
+    overflow-x: hidden;
+  }
+
+  /* Animated background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Glow orbs */
+  .orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(120px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .orb1 { width: 500px; height: 500px; background: rgba(123,97,255,0.12); top: -100px; left: -100px; }
+  .orb2 { width: 400px; height: 400px; background: rgba(0,229,255,0.08); bottom: 200px; right: -100px; }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  header {
+    text-align: center;
+    margin-bottom: 60px;
+    animation: fadeDown 0.8s ease both;
+  }
+
+  .badge {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(0,229,255,0.3);
+    padding: 6px 16px;
+    border-radius: 2px;
+    margin-bottom: 20px;
+    background: rgba(0,229,255,0.05);
+  }
+
+  h1 {
+    font-size: clamp(32px, 6vw, 56px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -1px;
+    background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.6) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 12px;
+  }
+
+  h1 span {
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+
+  /* Flow */
+  .flow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .step {
+    width: 100%;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: stepIn 0.5s ease forwards;
+  }
+
+  .step:nth-child(1)  { animation-delay: 0.1s; }
+  .step:nth-child(2)  { animation-delay: 0.15s; }
+  .step:nth-child(3)  { animation-delay: 0.2s; }
+  .step:nth-child(4)  { animation-delay: 0.25s; }
+  .step:nth-child(5)  { animation-delay: 0.3s; }
+  .step:nth-child(6)  { animation-delay: 0.35s; }
+  .step:nth-child(7)  { animation-delay: 0.4s; }
+  .step:nth-child(8)  { animation-delay: 0.45s; }
+  .step:nth-child(9)  { animation-delay: 0.5s; }
+  .step:nth-child(10) { animation-delay: 0.55s; }
+  .step:nth-child(11) { animation-delay: 0.6s; }
+
+  .node {
+    background: var(--node-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    position: relative;
+    transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+    cursor: default;
+  }
+
+  .node:hover {
+    border-color: var(--accent-color, var(--accent));
+    box-shadow: 0 0 30px var(--glow-color, rgba(0,229,255,0.12));
+    transform: translateY(-2px);
+  }
+
+  /* Accent stripe */
+  .node::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    bottom: 12px;
+    width: 3px;
+    border-radius: 0 2px 2px 0;
+    background: var(--accent-color, var(--accent));
+  }
+
+  .node-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 4px;
+  }
+
+  .step-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    color: var(--accent-color, var(--accent));
+    opacity: 0.7;
+    white-space: nowrap;
+  }
+
+  .node-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: 0.3px;
+  }
+
+  .node-desc {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    margin-left: 0;
+    padding-left: 0;
+    letter-spacing: 0.3px;
+  }
+
+  /* Sub-items */
+  .sub-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+    margin-left: 0;
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 6px;
+    padding: 5px 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11.5px;
+    color: rgba(232,234,240,0.75);
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+  }
+
+  .tag:hover {
+    background: rgba(255,255,255,0.07);
+    border-color: var(--accent-color, rgba(0,229,255,0.3));
+    color: var(--text);
+  }
+
+  .tag-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent-color, var(--accent));
+    opacity: 0.6;
+    flex-shrink: 0;
+  }
+
+  /* Connector */
+  .connector {
+    display: flex;
+    justify-content: center;
+    padding: 6px 0;
+  }
+
+  .connector-line {
+    width: 1px;
+    height: 28px;
+    background: linear-gradient(to bottom, var(--connector-color, rgba(0,229,255,0.3)), transparent);
+    position: relative;
+  }
+
+  .connector-line::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid var(--connector-color, rgba(0,229,255,0.4));
+  }
+
+  /* Icon */
+  .node-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+    background: var(--icon-bg, rgba(0,229,255,0.1));
+  }
+
+  /* Color variants */
+  .c1  { --accent-color: #00e5ff; --glow-color: rgba(0,229,255,0.15); --icon-bg: rgba(0,229,255,0.1); --connector-color: rgba(0,229,255,0.3); }
+  .c2  { --accent-color: #7b61ff; --glow-color: rgba(123,97,255,0.15); --icon-bg: rgba(123,97,255,0.1); --connector-color: rgba(123,97,255,0.3); }
+  .c3  { --accent-color: #ff9f43; --glow-color: rgba(255,159,67,0.15); --icon-bg: rgba(255,159,67,0.1); --connector-color: rgba(255,159,67,0.3); }
+  .c4  { --accent-color: #00ff9d; --glow-color: rgba(0,255,157,0.15); --icon-bg: rgba(0,255,157,0.1); --connector-color: rgba(0,255,157,0.3); }
+  .c5  { --accent-color: #ff4f7b; --glow-color: rgba(255,79,123,0.15); --icon-bg: rgba(255,79,123,0.1); --connector-color: rgba(255,79,123,0.3); }
+  .c6  { --accent-color: #ffd60a; --glow-color: rgba(255,214,10,0.15); --icon-bg: rgba(255,214,10,0.1); --connector-color: rgba(255,214,10,0.3); }
+  .c7  { --accent-color: #54d2ff; --glow-color: rgba(84,210,255,0.15); --icon-bg: rgba(84,210,255,0.1); --connector-color: rgba(84,210,255,0.3); }
+  .c8  { --accent-color: #ff7849; --glow-color: rgba(255,120,73,0.15); --icon-bg: rgba(255,120,73,0.1); --connector-color: rgba(255,120,73,0.3); }
+  .c9  { --accent-color: #a78bfa; --glow-color: rgba(167,139,250,0.15); --icon-bg: rgba(167,139,250,0.1); --connector-color: rgba(167,139,250,0.3); }
+  .c10 { --accent-color: #34d399; --glow-color: rgba(52,211,153,0.15); --icon-bg: rgba(52,211,153,0.1); --connector-color: rgba(34,211,153,0.3); }
+  .c11 { --accent-color: #f472b6; --glow-color: rgba(244,114,182,0.15); --icon-bg: rgba(244,114,182,0.1); --connector-color: rgba(244,114,182,0.3); }
+
+  /* Animations */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes stepIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    margin-top: 60px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fadeDown 0.6s 1.2s ease forwards;
+  }
+</style>
+</head>
+<body>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+
+<div class="container">
+  <header>
+    <div class="badge">System Architecture</div>
+    <h1>Guardian <span>AI</span></h1>
+    <p class="subtitle">Complete Platform Flow</p>
+  </header>
+
+  <div class="flow">
+
+    <!-- 1 -->
+    <div class="step c1">
+      <div class="node c1">
+        <div class="node-header">
+          <div class="node-icon">🏠</div>
+          <div>
+            <div class="step-num">STEP 01</div>
+            <div class="node-title">Homepage</div>
+          </div>
+        </div>
+        <div class="node-desc">User lands on platform → clicks Get Started</div>
+      </div>
+    </div>
+
+    <div class="connector c1"><div class="connector-line"></div></div>
+
+    <!-- 2 -->
+    <div class="step c2">
+      <div class="node c2">
+        <div class="node-header">
+          <div class="node-icon">🔐</div>
+          <div>
+            <div class="step-num">STEP 02</div>
+            <div class="node-title">Authentication</div>
+          </div>
+        </div>
+        <div class="node-desc">Identity verification & access control</div>
+        <div class="sub-items">
+          <span class="tag"><span class="tag-dot"></span>Sign Up</span>
+          <span class="tag"><span class="tag-dot"></span>Login</span>
+          <span class="tag"><span class="tag-dot"></span>SSO / OAuth</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector c2"><div class="connector-line"></div></div>
+
+    <!-- 3 -->
+    <div class="step c3">
+      <div class="node c3">
+        <div class="node-header">
+          <div class="node-icon">🚀</div>
+          <div>
+            <div class="step-num">STEP 03</div>
+            <div class="node-title">Onboarding</div>
+          </div>
+        </div>
+        <div class="node-desc">Initial configuration & workspace setup</div>
+        <div class="sub-items">
+          <span class="tag"><span class="tag-dot"></span>Setup platform</span>
+          <span class="tag"><span class="tag-dot"></span>Preferences</span>
+          <span class="tag"><span class="tag-dot"></span>Team invite</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector c3"><div class="connector-line"></div></div>
+
+    <!-- 4 -->
+    <div class="step c4">
+      <div class="node c4">
+        <div class="node-header">
+          <div class="node-icon">⚡</div>
+          <div>
+            <div class="step-num">STEP 04</div>
+            <div class="node-title">Dashboard Load</div>
+          </div>
+        </div>
+        <div class="node-desc">AI models initialized · Data streams connected</div>
+      </div>
+    </div>
+
+    <div class="connector c4"><div class="connector-line"></div></div>
+
+    <!-- 5 -->
+    <div class="step c5">
+      <div class="node c5">
+        <div class="node-header">
+          <div class="node-icon">🧩</div>
+          <div>
+            <div class="step-num">STEP 05</div>
+            <div class="node-title">Core Modules</div>
+          </div>
+        </div>
+        <div class="node-desc">Primary enforcement & safety layer</div>
+        <div class="sub-items">
+          <span class="tag"><span class="tag-dot"></span>Content Moderation</span>
+          <span class="tag"><span class="tag-dot"></span>Policy Enforcement</span>
+          <span class="tag"><span class="tag-dot"></span>Threat Detection</span>
+          <span class="tag"><span class="tag-dot"></span>Analytics</span>
+          <span class="tag"><span class="tag-dot"></span>Brand Safety</span>
+          <span class="tag"><span class="tag-dot"></span>AI Marketing</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector c5"><div class="connector-line"></div></div>
+
+    <!-- 6 -->
+    <div class="step c6">
+      <div class="node c6">
+        <div class="node-header">
+          <div class="node-icon">🧠</div>
+          <div>
+            <div class="step-num">STEP 06</div>
+            <div class="node-title">AI Intelligence Suite</div>
+          </div>
+        </div>
+        <div class="node-desc">Advanced reasoning & autonomous decision layer</div>
+        <div class="sub-items">
+          <span class="tag"><span class="tag-dot"></span>Predictive Engine</span>
+          <span class="tag"><span class="tag-dot"></span>AI Copilot</span>
+          <span class="tag"><span class="tag-dot"></span>Decision Engine</span>
+          <span class="tag"><span class="tag-dot"></span>Explainable AI</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector c6"><div class="connector-line"></div></div>
+
+    <!-- 7 -->
+    <div class="step c7">
+      <div class="node c7">
+        <div class="node-header">
+          <div class="node-icon">⚙️</div>
+          <div>
+            <div class="step-num">STEP 07</div>
+            <div class="node-title">Actions</div>
+          </div>
+        </div>
+        <div class="node-desc">Real-time enforcement & intervention toolkit</div>
+        <div class="sub-items">
+          <span class="tag"><span class="tag-dot"></span>Remove content</span>
+          <span class="tag"><span class="tag-dot"></span>Block users</span>
+          <span class="tag"><span class="tag-dot"></span>Adjust policies</span>
+          <span class="tag"><span class="tag-dot"></span>Pause ads</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector c7"><div class="connector-line"></div></div>
+
+    <!-- 8 -->
+    <div class="step c8">
+      <div class="node c8">
+        <div class="node-header">
+          <div class="node-icon">🔔</div>
+          <div>
+            <div class="step-num">STEP 08</div>
+            <div class="node-title">Alerts & Notifications</div>
+          </div>
+        </div>
+        <div class="node-desc">Tiered event escalation system</div>
+        <div class="sub-items">
+          <span class="tag"><span class="tag-dot"></span>Critical</span>
+          <span class="tag"><span class="tag-dot"></span>Warning</span>
+          <span class="tag"><span class="tag-dot"></span>Info</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector c8"><div class="connector-line"></div></div>
+
+    <!-- 9 -->
+    <div class="step c9">
+      <div class="node c9">
+        <div class="node-header">
+          <div class="node-icon">📊</div>
+          <div>
+            <div class="step-num">STEP 09</div>
+            <div class="node-title">Reports & Analytics</div>
+          </div>
+        </div>
+        <div class="node-desc">Business intelligence & data visibility layer</div>
+        <div class="sub-items">
+          <span class="tag"><span class="tag-dot"></span>Insights</span>
+          <span class="tag"><span class="tag-dot"></span>Graphs</span>
+          <span class="tag"><span class="tag-dot"></span>Exports</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector c9"><div class="connector-line"></div></div>
+
+    <!-- 10 -->
+    <div class="step c10">
+      <div class="node c10">
+        <div class="node-header">
+          <div class="node-icon">💳</div>
+          <div>
+            <div class="step-num">STEP 10</div>
+            <div class="node-title">Settings & Billing</div>
+          </div>
+        </div>
+        <div class="node-desc">Platform management & commercial controls</div>
+        <div class="sub-items">
+          <span class="tag"><span class="tag-dot"></span>Configurations</span>
+          <span class="tag"><span class="tag-dot"></span>Subscriptions</span>
+          <span class="tag"><span class="tag-dot"></span>Team roles</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="connector c10"><div class="connector-line"></div></div>
+
+    <!-- 11 -->
+    <div class="step c11">
+      <div class="node c11">
+        <div class="node-header">
+          <div class="node-icon">🔄</div>
+          <div>
+            <div class="step-num">STEP 11</div>
+            <div class="node-title">Continuous Learning Loop</div>
+          </div>
+        </div>
+        <div class="node-desc">Feedback-driven model refinement — AI improves over time</div>
+        <div class="sub-items">
+          <span class="tag"><span class="tag-dot"></span>Model retraining</span>
+          <span class="tag"><span class="tag-dot"></span>Policy updates</span>
+          <span class="tag"><span class="tag-dot"></span>Performance tuning</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>Guardian AI · Platform Architecture · v1.0</footer>
+</div>
+</body>
+</html>
