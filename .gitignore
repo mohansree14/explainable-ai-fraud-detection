@@ -32,6 +32,8 @@ dist/
 # Data
 data/*
 !data/.gitkeep
+!data/raw/
+!data/raw/sms_spam_collection.csv
 
 # Local Environments
 env/
