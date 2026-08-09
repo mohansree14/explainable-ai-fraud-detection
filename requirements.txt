@@ -12,5 +12,6 @@ numpy==1.26.3
 torch==2.1.2 --index-url https://download.pytorch.org/whl/cpu
 opencv-python-headless==4.9.0.80
 # ML fraud classifier (ml/train_fraud_model.py output, loaded at runtime)
-scikit-learn==1.7.2
+# 1.6.1 is the newest scikit-learn with Python 3.9 wheels (matches backend/Dockerfile's base image)
+scikit-learn==1.6.1
 joblib==1.4.2

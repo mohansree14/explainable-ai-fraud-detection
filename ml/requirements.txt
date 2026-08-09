@@ -1,4 +1,5 @@
 # Training pipeline only (not needed by the running API)
-scikit-learn==1.7.2
+# Pinned to match requirements.txt so the saved model unpickles cleanly at runtime
+scikit-learn==1.6.1
 pandas==2.2.3
 joblib==1.4.2
