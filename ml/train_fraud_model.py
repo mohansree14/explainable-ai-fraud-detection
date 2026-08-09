@@ -5,10 +5,9 @@ and saves the trained pipeline + metrics report.
 
 Run: python ml/train_fraud_model.py
 
-Dataset: UCI SMS Spam Collection (CC BY 4.0), 5,572 labeled SMS messages.
-data/raw/ is gitignored (repo convention) — re-download before training via:
-  curl -sL -o data/raw/sms_spam_collection.csv \
-    https://raw.githubusercontent.com/mohitgupta-1O1/Kaggle-SMS-Spam-Collection-Dataset-/master/spam.csv
+Dataset: UCI SMS Spam Collection (CC BY 4.0), 5,572 labeled SMS messages,
+committed at data/raw/sms_spam_collection.csv. Original source:
+  https://raw.githubusercontent.com/mohitgupta-1O1/Kaggle-SMS-Spam-Collection-Dataset-/master/spam.csv
 """
 
 import json
