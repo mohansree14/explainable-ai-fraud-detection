@@ -67,9 +67,9 @@ Guardan AI/
 └── data/               # Dataset storage
 ```
 
-## Setup & Run
+## Additional Apps
 
-### 1. Marketing Homepage
+### Marketing Homepage
 ```bash
 cd homepage/ui
 npm install
@@ -77,17 +77,8 @@ npm run dev
 ```
 Open `http://localhost:5173`.
 
-### 2. Analysis Dashboard
+### Analysis Dashboard
 The dashboard is accessible via the "Launch Platform" button on the homepage or directly at `/dashboard/index.html`.
-
-### 3. Backend Services
-```bash
-# From root
-.\env\Scripts\activate
-pip install -r requirements.txt
-cd backend
-python main.py
-```
 
 ## Reproducibility
 - All Python dependencies are pinned in `requirements.txt`.

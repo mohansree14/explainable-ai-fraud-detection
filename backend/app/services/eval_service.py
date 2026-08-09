@@ -2,7 +2,7 @@
 import json
 import os
 import time
-from models.fraud_classification.model import fraud_classifier
+from app.services.fraud_detector import fraud_detector
 
 class EvalService:
     def __init__(self):
@@ -20,7 +20,7 @@ class EvalService:
 
         with open(real_path, 'r') as f:
             data = json.load(f)
-        
+
         correct = 0
         total = len(data)
         results = []
@@ -28,27 +28,21 @@ class EvalService:
         for item in data:
             text = item["text"]
             true_label = item["label"]
-            
+
             start_time = time.time()
-            prediction = fraud_classifier.classify_fraud(text, "text")
+            prediction = fraud_detector.analyze_text(text)
             latency = (time.time() - start_time) * 1000
-            
-            predicted_label = prediction["fraud_type"]
-            confidence = prediction["confidence"]
-            
-            is_correct = False
-            if true_label == "Legitimate":
-                if predicted_label == "Unknown" or confidence < 0.5:
-                    is_correct = True
-            else:
-                if predicted_label.lower() in true_label.lower() or true_label.lower() in predicted_label.lower():
-                    is_correct = True
-                elif predicted_label == "Suspicious Message" and true_label != "Legitimate":
-                    is_correct = True
+
+            predicted_label = ", ".join(prediction["detected_types"]) or "Legitimate"
+            is_fraud = prediction["is_fraud"]
+
+            # fraud_detector only does binary fraud/not-fraud detection, not specific
+            # scam-type classification, so accuracy is judged on that binary call.
+            is_correct = is_fraud != (true_label == "Legitimate")
 
             if is_correct:
                 correct += 1
-            
+
             results.append({
                 "text": text,
                 "predicted": predicted_label,
