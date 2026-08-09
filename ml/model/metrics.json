@@ -1,0 +1,45 @@
+{
+  "model": "TF-IDF (1-2 gram) + Logistic Regression",
+  "training_set": {
+    "source": "UCI SMS Spam Collection (data/raw/sms_spam_collection.csv)",
+    "n_train": 4135,
+    "n_test": 1034
+  },
+  "held_out_test_metrics": {
+    "accuracy": 0.97678916827853,
+    "precision": 0.928,
+    "recall": 0.8854961832061069,
+    "f1": 0.90625,
+    "roc_auc": 0.9932075439797791,
+    "confusion_matrix": [
+      [
+        894,
+        9
+      ],
+      [
+        15,
+        116
+      ]
+    ],
+    "n_samples": 1034
+  },
+  "domain_eval_metrics": {
+    "accuracy": 0.5,
+    "precision": 1.0,
+    "recall": 0.16666666666666666,
+    "f1": 0.2857142857142857,
+    "roc_auc": 0.7916666666666666,
+    "confusion_matrix": [
+      [
+        4,
+        0
+      ],
+      [
+        5,
+        1
+      ]
+    ],
+    "n_samples": 10
+  },
+  "domain_eval_note": "backend/data/evaluation_set.json contains Guardian AI's own scam examples (delivery/romance/job/investment scams, phishing) not seen during training \u2014 this measures generalization beyond generic SMS spam."
+}

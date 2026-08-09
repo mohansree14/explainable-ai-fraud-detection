@@ -1,0 +1,4 @@
+# Training pipeline only (not needed by the running API)
+scikit-learn==1.7.2
+pandas==2.2.3
+joblib==1.4.2
