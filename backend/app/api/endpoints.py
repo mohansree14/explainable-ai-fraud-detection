@@ -13,6 +13,7 @@ class AnalysisResponse(BaseModel):
     detected_types: List[str]
     analysis: str
     extracted_text: Optional[str] = None
+    ml_probability: Optional[float] = None
 
 class TextAnalysisRequest(BaseModel):
     text: str
