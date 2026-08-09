@@ -5,10 +5,9 @@ import joblib
 
 logger = logging.getLogger(__name__)
 
-# ponytail: assumes a full repo checkout (ml/ is a sibling of backend/).
-# Docker's build context for backend/ doesn't include ml/, so this path
-# won't resolve in a container image until ml/model/ is added to that
-# build context (or the model is bundled inside backend/ instead).
+# Resolves to <repo_root>/ml/model/fraud_classifier.joblib. The Docker image
+# mirrors this layout under /app (see backend/Dockerfile + docker-compose.yml),
+# so this path works both in a full local checkout and in the container.
 _MODEL_PATH = os.path.join(
     os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))),
     "ml", "model", "fraud_classifier.joblib",

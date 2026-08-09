@@ -167,8 +167,8 @@ docker-compose version
 
 1. Check that all required files are present:
    - backend/Dockerfile
-   - backend/requirements.txt
-   - backend/main.py
+   - requirements.txt
+   - backend/app/main.py
 
 2. Verify the backend service logs:
    ```bash
